@@ -1,19 +1,38 @@
 "use client"
-import Tiptap from "@/components/Tiptap"
-import Bold from "@/components/Bold"
-import ListItems from "@/components/ListItems";
-import Editor from "../lib/editor";
-import { useEditor } from "@tiptap/react";
-import { useContext,createContext } from "react";
 
-export default function Home(){
-    const editor=useEditor(Editor)
+import { EditorContent, useEditor } from '@tiptap/react'
+import React from 'react'
+import Tiptap from '@/components/Tiptap'
+import Editor from '../lib/editor'
+import TextAllign from "@/components/TextAllign"
+import BoldText from '@/components/Bold'
+import ItalicText from '@/components/Italic'
+import Underline from '@/components/Underline'
+import HeadingText from '@/components/Heading'
+import Fonts from '@/components/Fonts'
+import Numbers from '@/components/Numbers'
+import WordCounter from '@/components/WordCounter'
+export default () => {
+  const editor = useEditor(
+    Editor
+  )
 
-    return(
-        <div className="bg-white text-black" >
-            <Bold editor={editor}/>
-            <ListItems editor={editor}/>
-            <Tiptap editor={editor}/>
-        </div>
-    )
+  if (!editor) {
+    return null
+  }
+
+  return (
+    <div>
+        <HeadingText editor={editor}/>
+        <WordCounter editor={editor}/>
+        <Fonts editor={editor}/>
+        <BoldText  editor={editor}/>
+        <ItalicText editor={editor}/>
+        <Underline editor={editor}/>
+        <TextAllign editor={editor}/>
+        <Numbers editor={editor}/>
+        <Tiptap editor={editor} />
+        
+    </div>
+  )
 }
