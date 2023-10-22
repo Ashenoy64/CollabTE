@@ -1,6 +1,6 @@
 "use client"
 
-import { EditorContent, useEditor } from '@tiptap/react'
+import { BubbleMenu, EditorContent, useEditor } from '@tiptap/react'
 import React from 'react'
 import Tiptap from '@/components/Tiptap'
 import Editor from '../lib/editor'
@@ -12,6 +12,7 @@ import HeadingText from '@/components/Heading'
 import Fonts from '@/components/Fonts'
 import Numbers from '@/components/Numbers'
 import WordCounter from '@/components/WordCounter'
+import PopMenu from '@/components/PopMenu'
 export default () => {
   const editor = useEditor(
     Editor
@@ -23,6 +24,7 @@ export default () => {
 
   return (
     <div>
+        <PopMenu editor={editor}/>
         <HeadingText editor={editor}/>
         <WordCounter editor={editor}/>
         <Fonts editor={editor}/>

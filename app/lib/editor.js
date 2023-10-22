@@ -12,6 +12,7 @@ import TextStyle from '@tiptap/extension-text-style'
 import ListItem from '@tiptap/extension-list-item'
 import OrderedList from '@tiptap/extension-ordered-list'
 import CharacterCount from '@tiptap/extension-character-count'
+
 const Editor={
     extensions:[
         Document,
@@ -26,7 +27,7 @@ const Editor={
         FontFamily,
         ListItem,
         OrderedList,
-        CharacterCount
+        CharacterCount,
     ],
     editorProps:{
         attributes:{class:"h-screen p-10"}
