@@ -13,7 +13,9 @@ import Fonts from '@/components/Fonts'
 import Numbers from '@/components/Numbers'
 import WordCounter from '@/components/WordCounter'
 import PopMenu from '@/components/PopMenu'
+
 export default () => {
+  
   const editor = useEditor(
     Editor
   )

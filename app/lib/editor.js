@@ -22,6 +22,7 @@ const provider=new HocuspocusProvider({
     url:"ws://127.0.0.1:1234",
     name: "example-document"
 })
+
 const Editor={
     extensions:[
         Document,
@@ -43,7 +44,12 @@ const Editor={
     ],
     editorProps:{
         attributes:{class:"h-screen m-5 p-5 bg-zinc-500"}
-    }
+    },
+    onUpdate: ({ editor }) => {
+        const json = editor.getJSON()
+        
+        // send the content to an API here
+      },
 }
 
 export default Editor
