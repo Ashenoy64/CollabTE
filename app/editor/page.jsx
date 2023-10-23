@@ -24,15 +24,17 @@ export default () => {
 
   return (
     <div>
-        <PopMenu editor={editor}/>
-        <HeadingText editor={editor}/>
-        <WordCounter editor={editor}/>
-        <Fonts editor={editor}/>
-        <BoldText  editor={editor}/>
-        <ItalicText editor={editor}/>
-        <Underline editor={editor}/>
-        <TextAllign editor={editor}/>
-        <Numbers editor={editor}/>
+        <div className='flex flex-row m-5 justify-center content-center items-center bg-zinc-800'>
+                <PopMenu editor={editor}/>
+                <HeadingText editor={editor}/>
+                <WordCounter editor={editor}/>
+                <Fonts editor={editor}/>
+                <BoldText  editor={editor}/>
+                <ItalicText editor={editor}/>
+                <Underline editor={editor}/>
+                <TextAllign editor={editor}/>
+                <Numbers editor={editor}/>
+        </div>
         <Tiptap editor={editor} />
         
     </div>

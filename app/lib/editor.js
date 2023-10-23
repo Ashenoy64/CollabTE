@@ -12,7 +12,16 @@ import TextStyle from '@tiptap/extension-text-style'
 import ListItem from '@tiptap/extension-list-item'
 import OrderedList from '@tiptap/extension-ordered-list'
 import CharacterCount from '@tiptap/extension-character-count'
-
+import Collaboration from '@tiptap/extension-collaboration'
+import * as Y from "yjs"
+import {WebrtcProvider} from "y-webrtc"
+import { HocuspocusProvider } from '@hocuspocus/provider'
+const ydoc=new Y.Doc()
+// const provider= new WebrtcProvider("tiptap-collaboration-cursor-extension",ydoc)
+const provider=new HocuspocusProvider({
+    url:"ws://127.0.0.1:1234",
+    name: "example-document"
+})
 const Editor={
     extensions:[
         Document,
@@ -28,9 +37,12 @@ const Editor={
         ListItem,
         OrderedList,
         CharacterCount,
+        Collaboration.configure({
+            document: provider.document
+        })
     ],
     editorProps:{
-        attributes:{class:"h-screen p-10"}
+        attributes:{class:"h-screen m-5 p-5 bg-zinc-500"}
     }
 }
 

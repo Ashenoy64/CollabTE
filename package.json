@@ -9,9 +9,11 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@hocuspocus/provider": "^2.7.1",
     "@tiptap/extension-bold": "^2.1.12",
     "@tiptap/extension-bullet-list": "^2.1.12",
     "@tiptap/extension-character-count": "^2.1.12",
+    "@tiptap/extension-collaboration": "^2.1.12",
     "@tiptap/extension-font-family": "^2.1.12",
     "@tiptap/extension-heading": "^2.1.12",
     "@tiptap/extension-italic": "^2.1.12",
@@ -26,7 +28,9 @@
     "@tiptap/starter-kit": "^2.1.12",
     "next": "13.5.6",
     "react": "^18",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "y-webrtc": "^10.2.5",
+    "yjs": "^13.6.8"
   },
   "devDependencies": {
     "autoprefixer": "^10",
