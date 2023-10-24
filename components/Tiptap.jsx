@@ -4,13 +4,9 @@ import { EditorContent } from "@tiptap/react"
 
 
 const Tiptap=({editor})=>{
-    
-
     return(
             <div>
-            
-            
-            <EditorContent editor={editor}/>
+                <EditorContent editor={editor}/>
             </div>
     )
 

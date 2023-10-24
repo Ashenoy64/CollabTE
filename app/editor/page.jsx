@@ -4,41 +4,31 @@ import { BubbleMenu, EditorContent, useEditor } from '@tiptap/react'
 import React from 'react'
 import Tiptap from '@/components/Tiptap'
 import Editor from '../lib/editor'
-import TextAllign from "@/components/TextAllign"
-import BoldText from '@/components/Bold'
-import ItalicText from '@/components/Italic'
-import Underline from '@/components/Underline'
-import HeadingText from '@/components/Heading'
-import Fonts from '@/components/Fonts'
-import Numbers from '@/components/Numbers'
-import WordCounter from '@/components/WordCounter'
+import MenuBar from '@/components/MenuBar'
+import Footer from '@/components/Footer'
 import PopMenu from '@/components/PopMenu'
 
 export default () => {
   
   const editor = useEditor(
-    Editor
-  )
+    Editor)
+  
 
   if (!editor) {
     return null
   }
 
   return (
-    <div>
-        <div className='flex flex-row m-5 justify-center content-center items-center bg-zinc-800'>
+    <div className=' flex flex-col justify-center'>
                 <PopMenu editor={editor}/>
-                <HeadingText editor={editor}/>
-                <WordCounter editor={editor}/>
-                <Fonts editor={editor}/>
-                <BoldText  editor={editor}/>
-                <ItalicText editor={editor}/>
-                <Underline editor={editor}/>
-                <TextAllign editor={editor}/>
-                <Numbers editor={editor}/>
+        <div className='w-full p-2 flex flex-col justify-center'>
+            <MenuBar editor={editor}></MenuBar>
         </div>
         <Tiptap editor={editor} />
-        
+        <div>
+          <Footer editor={editor} />
+
+        </div>
     </div>
   )
 }
