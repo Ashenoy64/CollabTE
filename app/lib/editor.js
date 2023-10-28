@@ -50,10 +50,11 @@ const Editor={
         })
     ],
     editorProps:{
-        attributes:{class:"h-screen w-full m-5 p-8 bg-slate-100 rounded  text-black no-scrollbar overflow-auto w-3/4 mx-auto"}
+        attributes:{class:"h-screen w-full sm:w-3/2  md:w-1/2 m-5 p-8 bg-slate-100 rounded  text-black no-scrollbar overflow-auto w-3/4 mx-auto"}
     },
     onUpdate: ({ editor }) => {
         const json = editor.getJSON()
+        
         
       },
 }
