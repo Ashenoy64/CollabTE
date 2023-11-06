@@ -55,7 +55,6 @@ const Editor={
     onUpdate: ({ editor }) => {
         const json = editor.getJSON()
         
-        
       },
 }
 

@@ -1,7 +1,10 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getAuth} from "firebase/auth"
+import {getFirestore,setDoc,doc,getDoc} from "firebase/firestore"
 import { createUserWithEmailAndPassword,signInWithEmailAndPassword,GoogleAuthProvider,signInWithPopup,signOut} from 'firebase/auth'
+
+
 
 const firebaseConfig = {
   apiKey: "AIzaSyBFJfF-65jY3tVu0SLxx7IVqGFKK2vqyfI",
@@ -17,6 +20,7 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app)
+export const db =getFirestore(app)
 
 
 export const GoogleSignIn  = ()=>{
@@ -40,4 +44,12 @@ export const SignInWithEmail = (email,password)=>{
 
 export const GetCurrentUser = ()=>{
   return auth.currentUser;
+}
+
+export const SaveFile=(object,username,filename) =>{
+  return setDoc(doc(db,"files",username+'-'+filename),object)
+}
+
+export const LoadFile=(username,filename)=>{
+  return  getDoc(doc(db,'files',username+'-'+filename))
 }

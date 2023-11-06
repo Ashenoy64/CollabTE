@@ -8,6 +8,7 @@ import Fonts from "@/components/Fonts";
 import Numbers from "@/components/Numbers";
 import UndoRedo from "./UndoRedo";
 import Bullets from "./BulletList";
+import SL from "./SL";
 
 export default function MenuBar({ editor }) {
   return (
@@ -30,6 +31,9 @@ export default function MenuBar({ editor }) {
         <Bullets editor={editor}/>
         <Numbers editor={editor} />
         </div>
+      </div>
+      <div className="flex flex-col gap-1 justify-center">
+        <SL editor={editor} />
       </div>
     </div>
   );
