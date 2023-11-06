@@ -6,6 +6,10 @@ export const metadata = {
   title: 'CollabTE',
 }
 
+
+/*
+  Wrapper function to enclose all the components
+*/
 export default function RootLayout({ children }) {
   return (
     <html lang="en">

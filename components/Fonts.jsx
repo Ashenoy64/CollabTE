@@ -3,6 +3,10 @@
 
 import React,{useState} from "react"
 
+
+/*
+Setting up different font styles for the editor
+*/
 export default function Fonts({editor}){
     const [open,setOpen] = useState(false)
     const [option,setOption] = useState("inter")

@@ -22,12 +22,17 @@ import { HocuspocusProvider } from '@hocuspocus/provider'
 const ydoc=new Y.Doc()
 
 
-
+/*
+Setting up the collaborative environment
+*/
 const provider=new HocuspocusProvider({
     url:"ws://127.0.0.1:1234",
     name: "example-document"
 })
 
+/*
+Initilaizing the editor component
+*/
 const Editor={
     extensions:[
         Document,
@@ -54,7 +59,6 @@ const Editor={
     },
     onUpdate: ({ editor }) => {
         const json = editor.getJSON()
-        
         
       },
 }
