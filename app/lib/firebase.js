@@ -1,8 +1,8 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import { getAuth} from "firebase/auth"
-import {getFirestore,setDoc,doc,getDoc} from "firebase/firestore"
-import { createUserWithEmailAndPassword,signInWithEmailAndPassword,GoogleAuthProvider,signInWithPopup,signOut} from 'firebase/auth'
+import { getAuth } from "firebase/auth"
+import { getFirestore, setDoc, doc, getDoc } from "firebase/firestore"
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup, signOut } from 'firebase/auth'
 
 
 
@@ -17,39 +17,62 @@ const firebaseConfig = {
 };
 
 
-
+/*
+Initializing the services of firebase
+*/
 const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app)
-export const db =getFirestore(app)
+export const db = getFirestore(app)
 
 
-export const GoogleSignIn  = ()=>{
+/*
+  Function provides google authentication service
+*/
+export const GoogleSignIn = () => {
   const provider = new GoogleAuthProvider()
-  return signInWithPopup(auth,provider)
+  return signInWithPopup(auth, provider)
 }
 
-export const LogOut = ()=>{
+/*
+  Function to log out the user from the session
+*/
+export const LogOut = () => {
   return signOut(auth)
 }
 
-
-export const CreateNewUser = (email,password)=>{
-  return createUserWithEmailAndPassword(auth,email,password)
-     
+/*
+  Function to register the user using email and password
+*/
+export const CreateNewUser = (email, password) => {
+  return createUserWithEmailAndPassword(auth, email, password)
 }
 
-export const SignInWithEmail = (email,password)=>{
+/*
+  Function to set up a session for the user using email and password
+*/
+export const SignInWithEmail = (email, password) => {
   return signInWithEmailAndPassword(auth, email, password)
 }
 
-export const GetCurrentUser = ()=>{
+/*
+  Function to get the current user under session
+*/
+export const GetCurrentUser = () => {
   return auth.currentUser;
 }
 
-export const SaveFile=(object,username,filename) =>{
-  return setDoc(doc(db,"files",username+'-'+filename),object)
+
+/*
+  Function to save the file
+*/
+export const SaveFile = (object, username, filename) => {
+  return setDoc(doc(db, "files", username + '-' + filename), object)
 }
 
-export const LoadFile=(username,filename)=>{
-  return  getDoc(doc(db,'files',username+'-'+filename))
+
+/*
+  Function to load the file
+*/
+export const LoadFile = (username, filename) => {
+  return getDoc(doc(db, 'files', username + '-' + filename))
 }
