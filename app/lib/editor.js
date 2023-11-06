@@ -19,13 +19,15 @@ import BulletList from '@tiptap/extension-bullet-list'
 import * as Y from "yjs"
 import {WebrtcProvider} from "y-webrtc"
 import { HocuspocusProvider } from '@hocuspocus/provider'
-const ydoc=new Y.Doc()
+import CollaborationCursor from '@tiptap/extension-collaboration-cursor'
+
 
 
 
 const provider=new HocuspocusProvider({
     url:"ws://127.0.0.1:1234",
-    name: "example-document"
+    name: "example-document",
+    
 })
 
 const Editor={
@@ -47,6 +49,13 @@ const Editor={
         History,
         Collaboration.configure({
             document: provider.document
+        }),
+        CollaborationCursor.configure({
+            provider,
+            user:{
+                name:"Monish",
+                color:"#f783ac",
+            }
         })
     ],
     editorProps:{
