@@ -1,32 +1,18 @@
 "use client";
 
-import { BubbleMenu, EditorContent, useEditor } from '@tiptap/react'
-import React, { useEffect,useState } from 'react'
-import Tiptap from '@/components/Tiptap'
-import Editor from '../lib/editor'
-import MenuBar from '@/components/MenuBar'
-import Footer from '@/components/Footer'
-import PopMenu from '@/components/PopMenu'
-import { auth } from '../lib/firebase'
-import { onAuthStateChanged } from 'firebase/auth'
-import { useState } from 'react'
-import { useRouter,useSearchParams } from "next/navigation";
-
-
+import { BubbleMenu, EditorContent, useEditor } from "@tiptap/react";
+import React, { useEffect, useState } from "react";
+import Tiptap from "@/components/Tiptap";
+import { Editor, EditorConfig } from "../lib/editor";
+import MenuBar from "@/components/MenuBar";
+import Footer from "@/components/Footer";
+import PopMenu from "@/components/PopMenu";
+import { auth } from "../lib/firebase";
+import { onAuthStateChanged } from "firebase/auth";
+import { useRouter, useSearchParams } from "next/navigation";
 
 export default () => {
-
-  const [user,setUser]=useState(null)
- 
-  useEffect(() => {
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        setUser(user);
-      } else {
-        router.push("/");
-      }
-    });
-  }, []);
+  const [user, setUser] = useState(null);
 
   const router = useRouter();
   useEffect(() => {
@@ -38,34 +24,33 @@ export default () => {
       }
     });
   }, []);
-  const searchParms = useSearchParams()
-  
-  const roomName = searchParms.get('roomName')
-  const isOnline =searchParms.get('isOnline')
-  const decodeRoomName = roomName ? atob(roomName) : 'untitled'
-  
-  
-  const editor = useEditor(EditorConfig(isOnline,decodeRoomName))
+  const searchParms = useSearchParams();
 
-  if (!editor) {
-    return null;
-  }
+  const roomName = searchParms.get("roomName");
+  const isOnline = searchParms.get("isOnline");
+  const decodeRoomName = roomName ? atob(roomName) : "untitled";
+
+
+  // const username = user.displayName ? user.displayName : user.email;
+  const editor = useEditor(EditorConfig(isOnline, decodeRoomName, 'Avanish'))
 
   if (user) {
-  return (
-    <div className=" flex flex-col justify-center">
-      <PopMenu editor={editor} />
-      <div className="w-full p-2 flex flex-col justify-center">
-        <MenuBar editor={editor}></MenuBar>
-      </div>
-      <Tiptap editor={editor} />
-      <div>
-        <Footer editor={editor} />
-      </div>
-    </div>
-  );}
 
+    return (
+      <div className=" flex flex-col justify-center">
+        <PopMenu editor={editor} />
+        <div className="w-full p-2 flex flex-col justify-center">
+          <MenuBar editor={editor}></MenuBar>
+        </div>
+        <Tiptap editor={editor} />
+        <div>
+          <Footer editor={editor} />
+        </div>
+      </div>
+    );
+  }
 
+  else{
   return (
     <div className="w-full h-screen flex flex-col justify-center items-center">
       <div role="status">
@@ -89,4 +74,5 @@ export default () => {
       </div>
     </div>
   );
+  }
 };

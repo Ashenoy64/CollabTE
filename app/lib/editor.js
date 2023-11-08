@@ -71,8 +71,9 @@ const Editor={
       },
 }
 
-export const EditorConfig = (isOnline, roomName) => {
+export const EditorConfig = (isOnline, roomName,userName) => {
     
+    if(isOnline){
         const provider = new HocuspocusProvider({
             url: "ws://127.0.0.1:1234",
             name: roomName
@@ -97,6 +98,13 @@ export const EditorConfig = (isOnline, roomName) => {
                 Collaboration.configure({
                     document: provider.document
                 }),
+                CollaborationCursor.configure({
+                    provider,
+                    user:{
+                        name:userName,
+                        color:"#f783ac",
+                    }
+                })
             ],
             editorProps: {
                 attributes: { class: "h-screen w-full sm:w-3/2  md:w-1/2 m-5 p-8 bg-slate-100 rounded  text-black no-scrollbar overflow-auto w-3/4 mx-auto" }
@@ -106,6 +114,37 @@ export const EditorConfig = (isOnline, roomName) => {
 
             },
         }
- return EditorConf
+        return EditorConf
+    }
+    else{
+        const EditorConf = {
+            extensions: [
+                Document,
+                Paragraph,
+                Text,
+                Bold,
+                Heading.configure({ levels: [1, 2, 3], }),
+                Italic,
+                Underline,
+                TextAlign.configure({ types: ['heading', 'paragraph',], }),
+                TextStyle,
+                FontFamily,
+                ListItem,
+                OrderedList,
+                BulletList,
+                CharacterCount,
+                History,
+            ],
+            editorProps: {
+                attributes: { class: "h-screen w-full sm:w-3/2  md:w-1/2 m-5 p-8 bg-slate-100 rounded  text-black no-scrollbar overflow-auto w-3/4 mx-auto" }
+            },
+            onUpdate: ({ editor }) => {
+                const json = editor.getJSON()
+
+            },
+        }
+
+        return EditorConf
+    }
 }
 
