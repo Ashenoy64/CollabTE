@@ -10,7 +10,7 @@ import UndoRedo from "./UndoRedo";
 import Bullets from "./BulletList";
 import SL from "./SL";
 
-export default function MenuBar({ editor }) {
+export default function MenuBar({ editor,user }) {
   return (
     <div className="w-full md:w-3/4  bg-neutral-800 flex flex-row p-4 justify-evenly mx-auto rounded">
       <div className="flex flex-col gap-1 justify-center">
@@ -33,7 +33,7 @@ export default function MenuBar({ editor }) {
         </div>
       </div>
       <div className="flex flex-col gap-1 justify-center">
-        <SL editor={editor} />
+        <SL editor={editor} user={user} />
       </div>
     </div>
   );

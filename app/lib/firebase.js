@@ -2,9 +2,9 @@
 
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth"
-import { getFirestore, setDoc, doc, getDoc } from "firebase/firestore"
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup, signOut,onAuthStateChanged } from 'firebase/auth'
-import { get, getDatabase,ref,set } from "firebase/database";
+import { getFirestore, setDoc, doc, deleteDoc, getDoc, updateDoc, arrayUnion, arrayRemove } from "firebase/firestore"
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from 'firebase/auth'
+import { get, getDatabase, ref, set } from "firebase/database";
 
 
 
@@ -27,25 +27,24 @@ const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app)
 export const db = getFirestore(app)
 
-export const database=getDatabase(app)
+export const database = getDatabase(app)
 
-export const setData=(docName,docData)=>{
-  const user=GetCurrentUser()
-  set(ref(database,"users/"+docName),{
-    data:docData,
-    
+export const setData = (docName, docData) => {
+  const user = GetCurrentUser()
+  set(ref(database, "users/" + docName), {
+    data: docData,
+
   })
-  .then(()=>{
-    console.log("ok")
-  })
-  .catch((error)=>{
-    console.log("Error: ",error)
-  })
+    .then(() => {
+      console.log("ok")
+    })
+    .catch((error) => {
+      console.log("Error: ", error)
+    })
 }
 
-export const getData=(docName)=>{
-  
-  return get(ref(database,"users/"+docName))
+export const getData = (docName) => {
+  return get(ref(database, "users/" + docName))
 
 }
 
@@ -82,21 +81,62 @@ export const SignInWithEmail = (email, password) => {
   Function to get the current user under session
 */
 export const GetCurrentUser = (callBack) => {
-  return onAuthStateChanged(auth,callBack(user));
+  return onAuthStateChanged(auth, callBack(user));
 }
 
 
 /*
   Function to save the file
 */
-export const SaveFile = (object, username, filename) => {
+
+export const SaveFile = (uid, filename) => {
+  return updateDoc(doc(db, 'users', uid), {
+    files: arrayUnion(filename)
+  })
+}
+
+export const DeleteFile = (uid, filename) => {
+  return updateDoc(doc(db, 'users', uid), {
+    files: arrayRemove(filename)
+  })
+}
+
+export const DeleteFileData = (uid, filename) => {
+  return deleteDoc(doc(db, "files", uid + '-' + filename))
+}
+
+export const SaveFileData = (object, username, filename) => {
   return setDoc(doc(db, "files", username + '-' + filename), object)
+}
+
+export const GetUserFiles = (user) => {
+  return getDoc(doc(db, "users", user.uid))
 }
 
 
 /*
   Function to load the file
 */
-export const LoadFile = (username, filename) => {
+export const LoadFileData = (username, filename) => {
   return getDoc(doc(db, 'files', username + '-' + filename))
 }
+
+export const CreateNewUserEntry = async (user) => {
+
+  try {
+    const docSnapshot = await getDoc(doc(db, 'users', user.uid));
+    if (!docSnapshot.exists()) {
+      const baseData = {
+        files: [],
+      };
+
+      await setDoc(doc(db, 'users', user.uid), baseData);
+    }
+  } catch (error) {
+    console.error("Error creating user entry:", error);
+    throw error; // Propagate the error for handling in the caller
+  }
+};
+
+
+

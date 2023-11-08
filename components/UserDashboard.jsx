@@ -2,34 +2,20 @@
 
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { LogOut, GetCurrentUser, auth } from "@/app/lib/firebase";
+import { LogOut, GetUserFiles, auth, DeleteFile,DeleteFileData } from "@/app/lib/firebase";
 import { onAuthStateChanged } from "firebase/auth";
 import { Room } from "./Modal";
 
+function FIleItems({ name,HandleDeleteFile}) {
+  
 
-function FIleItems({ name, size }) {
-  const [options, setOptions] = useState(false);
-
-  const handleOptions = () => {
-    console.log("Press");
-    setOptions(!options);
-  };
   return (
     <div className="flex flex-row justify-between  rounded border-2  p-2 w-full mx-auto">
       <div>{name}</div>
-      <div>{size}</div>
-      <div>
-        <button className="text-xl font-bold " onClick={() => handleOptions()}>
-          ...
-        </button>
-        <div
-          className={`absolute  bg-white text-black border-2 border-black flex flex-col gap-2 rounded  p-2 ${
-            options ? "block" : "hidden"
-          }`}
-        >
-          <button className="p-1 ">Delete</button>
-          <button className="p-1 ">View</button>
-        </div>
+
+      <div className="flex flex-row gap-3">
+        <button className="p-2 rounded w-16 bg-red-400  " onClick={()=>HandleDeleteFile(name)}>Delete</button>
+        <button className="p-2 rounded w-16 bg-green-400  ">Edit</button>
       </div>
     </div>
   );
@@ -37,18 +23,30 @@ function FIleItems({ name, size }) {
 
 export default function UserDashBoard() {
   const [user, setUser] = useState(null);
-  const [roomState,setRoomState] = useState(0)
+  const [roomState, setRoomState] = useState(0);
   const router = useRouter();
+  const [files, setFiles] = useState([]);
 
   useEffect(() => {
+    const GetFiles = async (user) => {
+      if (user) {
+        const data = await GetUserFiles(user);
+        if (data.exists()) {
+          const _files = await data.data();
+          setFiles(_files["files"]);
+        }
+      }
+    };
+
     onAuthStateChanged(auth, (user) => {
       if (user) {
         setUser(user);
+        GetFiles(user);
       } else {
         router.push("/");
       }
     });
-  }, []);
+  }, [user]);
 
   const handleSignOut = async () => {
     LogOut()
@@ -60,52 +58,62 @@ export default function UserDashBoard() {
       });
   };
 
+  const HandleRoomState = (state) => {
+    setRoomState(state);
+  };
 
-  const HandleRoomState = (state)=>{
-      setRoomState(state)
-  }
-
-  const RoomHandler=(roomName)=>{
-    const encodedRoomName = btoa(roomName)
-    const isOnline = true
-    if(roomState==2)
-    {
-      router.push(`/editor?isOnline=${isOnline}&roomName=${encodedRoomName}`)
+  const RoomHandler = (roomName) => {
+    const encodedRoomName = btoa(roomName);
+    const isOnline = true;
+    if (roomState == 2) {
+      router.push(`/editor?isOnline=${isOnline}&roomName=${encodedRoomName}`);
+    } else if (roomState == 1) {
+      router.push(`/editor?isOnline=${isOnline}&roomName=${encodedRoomName}`);
     }
-    else if(roomState==1)
+  };
+  
+  const HandleFileDelete= async(filename)=>{
+    if(user)
     {
-      router.push(`/editor?isOnline=${isOnline}&roomName=${encodedRoomName}`)
+      try{
+        await DeleteFile(user.uid,filename)
+        await DeleteFileData(user.uid,filename);
+        setFiles(oldVals=>{
+          return oldVals.filter(file=>file!=filename)
+        })
+      }
+      catch(error)
+      {
+        console.log(error)
+      }
     }
   }
-
-  const files = [
-    { name: "Test.txt", size: "20MB" },
-    { name: "Test1.txt", size: "21MB" },
-    { name: "Test2.txt", size: "22MB" },
-    { name: "Test3.txt", size: "23MB" },
-    { name: "Test4.txt", size: "24MB" },
-    { name: "Test5.txt", size: "25MB" },
-    { name: "Test5.txt", size: "25MB" },
-    { name: "Test5.txt", size: "25MB" },
-    { name: "Test5.txt", size: "25MB" },
-    { name: "Test5.txt", size: "25MB" },
-    { name: "Test6.txt", size: "26MB" },
-  ];
 
   if (user) {
-    const name = user.displayName ? user.displayName : user.email
+    const name = user.displayName ? user.displayName : user.email;
     return (
       <div className="flex flex-col w-full h-full ">
-        {roomState ? <Room state={roomState} CloseHandler={HandleRoomState} RoomHandler={RoomHandler} />: ""}
+        {roomState ? (
+          <Room
+            state={roomState}
+            CloseHandler={HandleRoomState}
+            RoomHandler={RoomHandler}
+          />
+        ) : (
+          ""
+        )}
         <div className="flex flex-row justify-between  top-0 border-b-2 text-white w-full p-2">
           <div className="font-bold text-xl pb-2">CollabTE</div>
           <div className="flex flex-row gap-2 text-black">
-            <button className=" hover:shadow-[0_0_5px_1px_rgba(255,_255,_255,_0.5)] rounded p-2 bg-blue-500" onClick={()=>HandleRoomState(1)}>
+            <button
+              className=" hover:shadow-[0_0_5px_1px_rgba(255,_255,_255,_0.5)] rounded p-2 bg-blue-500"
+              onClick={() => HandleRoomState(1)}
+            >
               Join Room
             </button>
             <button
               className=" hover:shadow-[0_0_5px_1px_rgba(255,_255,_255,_0.5)] rounded p-2 bg-blue-300"
-              onClick={()=>HandleRoomState(2)}
+              onClick={() => HandleRoomState(2)}
             >
               Create Room
             </button>
@@ -126,7 +134,7 @@ export default function UserDashBoard() {
           </div>
           <div className="flex flex-col overflow-auto no-scrollbar w-96 h-1/2 gap-2 shadow-[0_0_100px_1px_rgba(255,_255,_255,_0.3)]">
             {files.map((val, ind) => (
-              <FIleItems key={ind} {...val} />
+              <FIleItems key={ind} name={val} HandleDeleteFile={HandleFileDelete} />
             ))}
           </div>
         </div>
