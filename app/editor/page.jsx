@@ -1,23 +1,33 @@
 "use client";
 
-import { BubbleMenu, EditorContent, useEditor } from "@tiptap/react";
-import React,{useState,useEffect} from "react";
-import Tiptap from "@/components/Tiptap";
-import {EditorConfig} from "../lib/editor";
-import MenuBar from "@/components/MenuBar";
-import Footer from "@/components/Footer";
-import PopMenu from "@/components/PopMenu";
+import { BubbleMenu, EditorContent, useEditor } from '@tiptap/react'
+import React, { useEffect,useState } from 'react'
+import Tiptap from '@/components/Tiptap'
+import Editor from '../lib/editor'
+import MenuBar from '@/components/MenuBar'
+import Footer from '@/components/Footer'
+import PopMenu from '@/components/PopMenu'
+import { auth } from '../lib/firebase'
+import { onAuthStateChanged } from 'firebase/auth'
+import { useState } from 'react'
 import { useRouter,useSearchParams } from "next/navigation";
-import { onAuthStateChanged } from "firebase/auth";
-import { auth } from "@/app/lib/firebase";
-/*
-  Loads the editor with  menue bar and footer
-*/
 
-export default function Page(){
-  // const editor = useEditor(Editor);
 
-  const [user, setUser] = useState(null);
+
+export default () => {
+
+  const [user,setUser]=useState(null)
+ 
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setUser(user);
+      } else {
+        router.push("/");
+      }
+    });
+  }, []);
+
   const router = useRouter();
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
@@ -29,12 +39,14 @@ export default function Page(){
     });
   }, []);
   const searchParms = useSearchParams()
-
+  
   const roomName = searchParms.get('roomName')
   const isOnline =searchParms.get('isOnline')
   const decodeRoomName = roomName ? atob(roomName) : 'untitled'
+  
+  
+  const editor = useEditor(EditorConfig(isOnline,decodeRoomName))
 
-  const editor = EditorConfig(isOnline,decodeRoomName)
   if (!editor) {
     return null;
   }
@@ -48,7 +60,7 @@ export default function Page(){
       </div>
       <Tiptap editor={editor} />
       <div>
-        {/* <Footer editor={editor} /> */}
+        <Footer editor={editor} />
       </div>
     </div>
   );}

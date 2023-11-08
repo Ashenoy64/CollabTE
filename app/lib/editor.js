@@ -17,12 +17,59 @@ import History from '@tiptap/extension-history'
 import BulletList from '@tiptap/extension-bullet-list'
 import { WebrtcProvider } from "y-webrtc"
 import { HocuspocusProvider } from '@hocuspocus/provider'
+import CollaborationCursor from '@tiptap/extension-collaboration-cursor'
+
 import * as Y from "yjs"
 
 
 /*
 Setting up the collaborative environment
 */
+const provider=new HocuspocusProvider({
+    url:"ws://127.0.0.1:1234",
+    name: "example-document",
+    
+})
+
+/*
+Initilaizing the editor component
+*/
+const Editor={
+    extensions:[
+        Document,
+        Paragraph,
+        Text,
+        Bold,
+        Heading.configure({levels: [1, 2, 3],}),
+        Italic,
+        Underline,
+        TextAlign.configure({types: ['heading', 'paragraph',],}),
+        TextStyle,
+        FontFamily,
+        ListItem,
+        OrderedList,
+        BulletList,
+        CharacterCount,
+        History,
+        Collaboration.configure({
+            document: provider.document
+        }),
+        CollaborationCursor.configure({
+            provider,
+            user:{
+                name:"Avanish",
+                color:"#f783ac",
+            }
+        })
+    ],
+    editorProps:{
+        attributes:{class:"h-screen w-full sm:w-3/2  md:w-1/2 m-5 p-8 bg-slate-100 rounded  text-black no-scrollbar overflow-auto w-3/4 mx-auto"}
+    },
+    onUpdate: ({ editor }) => {
+        const json = editor.getJSON()
+        
+      },
+}
 
 export const EditorConfig = (isOnline, roomName) => {
     

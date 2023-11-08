@@ -1,13 +1,16 @@
 // Import the functions you need from the SDKs you need
+
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth"
 import { getFirestore, setDoc, doc, getDoc } from "firebase/firestore"
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup, signOut,onAuthStateChanged } from 'firebase/auth'
+import { get, getDatabase,ref,set } from "firebase/database";
 
 
 
 const firebaseConfig = {
   apiKey: "AIzaSyBFJfF-65jY3tVu0SLxx7IVqGFKK2vqyfI",
+  databaseURL: "https://collabte-87933-default-rtdb.asia-southeast1.firebasedatabase.app",
   authDomain: "collabte-87933.firebaseapp.com",
   projectId: "collabte-87933",
   storageBucket: "collabte-87933.appspot.com",
@@ -22,8 +25,27 @@ Initializing the services of firebase
 */
 const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app)
-export const db = getFirestore(app)
 
+export const database=getDatabase(app)
+export const setData=(docName,docData)=>{
+  const user=GetCurrentUser()
+  set(ref(database,"users/"+docName),{
+    data:docData,
+    
+  })
+  .then(()=>{
+    console.log("ok")
+  })
+  .catch((error)=>{
+    console.log("Error: ",error)
+  })
+}
+
+export const getData=(docName)=>{
+  
+  return get(ref(database,"users/"+docName))
+
+}
 
 /*
   Function provides google authentication service
