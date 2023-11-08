@@ -1,6 +1,11 @@
 "use client";
 import React, { useState } from "react";
-import { GoogleSignIn, CreateNewUser, SignInWithEmail } from "./lib/firebase";
+import {
+  GoogleSignIn,
+  CreateNewUser,
+  SignInWithEmail,
+  CreateNewUserEntry,
+} from "./lib/firebase";
 import { useRouter } from "next/navigation";
 
 /*
@@ -58,50 +63,114 @@ export default function Home() {
   /*
   Handler for Google sigin
 */
+  // const HandleGoogleSignIn = async () => {
+  //   setGoogleLoading(true);
+  //   GoogleSignIn()
+  //     .then((user) => {
+  //       return CreateNewUserEntry(user);
+  //     })
+  //     .then(() => {
+  //       setGoogleLoading(false);
+  //       router.push("/dashboard");
+  //     })
+  //     .catch((error) => {
+  //       Notify("There was some problem while signing you in");
+  //       console.log(error)
+  //       setGoogleLoading(false);
+  //     });
+  // };
+
   const HandleGoogleSignIn = async () => {
-    setGoogleLoading(true);
-    GoogleSignIn()
-      .then((user) => {
-        setGoogleLoading(false);
-        router.push("/dashboard");
-      })
-      .catch((error) => {
-        Notify("There was some problem while signing you in");
-        setGoogleLoading(false);
-      });
+    try {
+      setGoogleLoading(true);
+
+      const user = await GoogleSignIn();
+      await CreateNewUserEntry(user.user);
+
+      setGoogleLoading(false);
+      router.push("/dashboard");
+    } catch (error) {
+      Notify("There was some problem while signing you in");
+      console.error(error);
+      setGoogleLoading(false);
+    }
   };
 
   /*
   Handler for regsitering the new user
 */
+  // const HandleNewUserRegistration = async () => {
+  //   setLoading(true);
+  //   if (CheckPassword()) {
+  //     CreateNewUser(email, password)
+  //       .then((user) => {
+  //         return CreateNewUserEntry(user);
+  //       })
+  //       .then((user) => {
+  //         router.push("/dashboard");
+  //       })
+  //       .catch((error) => {
+  //         console.log(error)
+  //         Notify("There was some problem while signing you in");
+  //       });
+  //   }
+  //   setLoading(false);
+  // };
   const HandleNewUserRegistration = async () => {
     setLoading(true);
+
     if (CheckPassword()) {
-      CreateNewUser(email, password)
-        .then((user) => {
-          router.push("/dashboard");
-        })
-        .catch((error) => {
-          Notify("There was some problem while signing you in");
-        });
+      try {
+        const user = await CreateNewUser(email, password);
+        await CreateNewUserEntry(user.user);
+        router.push("/dashboard");
+      } catch (error) {
+        console.error(error);
+        Notify("There was some problem while signing you in");
+      } finally {
+        setLoading(false);
+      }
+    } else {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   /*
   Handler for loging in the user
 */
+  // const HandleSigInWithEmail = async () => {
+  //   if (email == "" || password == "") return;
+  //   setLoading(true);
+  //   SignInWithEmail(email, password)
+  //     .then((user) => {
+  //       return CreateNewUserEntry(user);
+  //     })
+  //     .then((user) => {
+  //       router.push("/dashboard");
+  //     })
+  //     .catch((error) => {
+  //       console.log(error)
+  //       Notify("There was some problem while signing you in");
+  //     });
+  //   setLoading(false);
+  // };
   const HandleSigInWithEmail = async () => {
-    if (email == "" || password == "") return;
-    setLoading(true);
-    SignInWithEmail(email, password)
-      .then((user) => {
-        router.push("/dashboard");
-      })
-      .catch((error) => {
-        Notify("There was some problem while signing you in");
-      });
-    setLoading(false);
+    if (email === "" || password === "") {
+      return;
+    }
+    try {
+      setLoading(true);
+
+      const user = await SignInWithEmail(email, password);
+      await CreateNewUserEntry(user.user);
+
+      router.push("/dashboard");
+    } catch (error) {
+      console.error(error);
+      Notify("There was some problem while signing you in");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -169,7 +238,7 @@ export default function Home() {
                 <div role="status">
                   <svg
                     aria-hidden="true"
-                    class="w-6 h-6 mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"
+                    className="w-6 h-6 mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"
                     viewBox="0 0 100 101"
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg"
@@ -183,7 +252,7 @@ export default function Home() {
                       fill="currentFill"
                     />
                   </svg>
-                  <span class="sr-only">Loading...</span>
+                  <span className="sr-only">Loading...</span>
                 </div>
               ) : (
                 "Login"
@@ -238,7 +307,7 @@ export default function Home() {
                 <div role="status">
                   <svg
                     aria-hidden="true"
-                    class="w-6 h-6 mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"
+                    className="w-6 h-6 mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"
                     viewBox="0 0 100 101"
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg"
@@ -252,7 +321,7 @@ export default function Home() {
                       fill="currentFill"
                     />
                   </svg>
-                  <span class="sr-only">Loading...</span>
+                  <span className="sr-only">Loading...</span>
                 </div>
               ) : (
                 "Register"
@@ -270,7 +339,7 @@ export default function Home() {
             <div role="status">
               <svg
                 aria-hidden="true"
-                class="w-8 h-8 mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"
+                className="w-8 h-8 mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"
                 viewBox="0 0 100 101"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
@@ -284,7 +353,7 @@ export default function Home() {
                   fill="currentFill"
                 />
               </svg>
-              <span class="sr-only">Loading...</span>
+              <span className="sr-only">Loading...</span>
             </div>
           ) : (
             <>

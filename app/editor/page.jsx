@@ -40,7 +40,7 @@ export default () => {
       <div className=" flex flex-col justify-center">
         <PopMenu editor={editor} />
         <div className="w-full p-2 flex flex-col justify-center">
-          <MenuBar editor={editor}></MenuBar>
+          <MenuBar editor={editor} user={user}></MenuBar>
         </div>
         <Tiptap editor={editor} />
         <div>
