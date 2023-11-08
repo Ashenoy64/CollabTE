@@ -3,6 +3,9 @@ import React, { useState } from "react";
 import { GoogleSignIn, CreateNewUser, SignInWithEmail } from "./lib/firebase";
 import { useRouter } from "next/navigation";
 
+/*
+  Landing page UI
+*/
 export default function Home() {
   const [login, setLogin] = useState(true);
   const [email, setEmail] = useState("");
@@ -15,13 +18,19 @@ export default function Home() {
 
   const router = useRouter();
 
-  const handleToggle = () => {
+  /*
+  Resets the input states
+*/
+  const HandleToggle = () => {
     setLogin(!login);
     setEmail("");
     setPassword("");
     setConfirmPassowrd("");
   };
 
+  /*
+  Function to notify the user on any message
+*/
   const Notify = (notice) => {
     setNotice(notice);
     setNoticeActive(true);
@@ -31,7 +40,10 @@ export default function Home() {
     }, 3000);
   };
 
-  const checkPassword = () => {
+  /*
+  Function to validate whether entered passwords matches
+*/
+  const CheckPassword = () => {
     if (password.length < 6) {
       Notify("Password Length must be greater than 6");
       return false;
@@ -43,23 +55,28 @@ export default function Home() {
     return true;
   };
 
-  const handleGoogleSignIn = async () => {
-    
-    setGoogleLoading(true)
+  /*
+  Handler for Google sigin
+*/
+  const HandleGoogleSignIn = async () => {
+    setGoogleLoading(true);
     GoogleSignIn()
       .then((user) => {
-        setGoogleLoading(false)
+        setGoogleLoading(false);
         router.push("/dashboard");
       })
       .catch((error) => {
         Notify("There was some problem while signing you in");
-        setGoogleLoading(false)
+        setGoogleLoading(false);
       });
   };
 
-  const handleNewUserRegistration = async () => {
-    setLoading(true)
-    if (checkPassword()) {
+  /*
+  Handler for regsitering the new user
+*/
+  const HandleNewUserRegistration = async () => {
+    setLoading(true);
+    if (CheckPassword()) {
       CreateNewUser(email, password)
         .then((user) => {
           router.push("/dashboard");
@@ -68,12 +85,15 @@ export default function Home() {
           Notify("There was some problem while signing you in");
         });
     }
-    setLoading(false)
+    setLoading(false);
   };
 
-  const handleSigInWithEmail = async () => {
+  /*
+  Handler for loging in the user
+*/
+  const HandleSigInWithEmail = async () => {
     if (email == "" || password == "") return;
-    setLoading(true)
+    setLoading(true);
     SignInWithEmail(email, password)
       .then((user) => {
         router.push("/dashboard");
@@ -81,7 +101,7 @@ export default function Home() {
       .catch((error) => {
         Notify("There was some problem while signing you in");
       });
-      setLoading(false)
+    setLoading(false);
   };
 
   return (
@@ -99,7 +119,7 @@ export default function Home() {
             className={`font-bold text-lg p-1 w-24 rounded-md ${
               login ? "bg-white text-black" : ""
             } cursor-pointer  `}
-            onClick={handleToggle}
+            onClick={HandleToggle}
           >
             Login
           </span>
@@ -107,7 +127,7 @@ export default function Home() {
             className={`font-bold text-lg p-1 w-24 rounded-md ${
               !login ? "bg-white text-black" : ""
             } cursor-pointer `}
-            onClick={handleToggle}
+            onClick={HandleToggle}
           >
             Register
           </span>
@@ -118,7 +138,7 @@ export default function Home() {
             className="flex flex-col gap-4 w-3/4 mx-auto"
             onSubmit={(e) => {
               e.preventDefault();
-              handleSigInWithEmail();
+              HandleSigInWithEmail();
             }}
           >
             <input
@@ -142,7 +162,8 @@ export default function Home() {
             />
             <button
               className="p-2 hover:bg-green-300 w-1/2 rounded mx-auto border-2 flex flex-row items-center justify-center"
-              type="submit" disabled={loading ? true : false}
+              type="submit"
+              disabled={loading ? true : false}
             >
               {loading ? (
                 <div role="status">
@@ -174,7 +195,7 @@ export default function Home() {
             className="flex flex-col gap-4 w-3/4 mx-auto"
             onSubmit={(e) => {
               e.preventDefault();
-              handleNewUserRegistration();
+              HandleNewUserRegistration();
             }}
           >
             <input
@@ -210,7 +231,8 @@ export default function Home() {
             />
             <button
               className="p-2 hover:bg-green-300 w-1/2 rounded mx-auto border-2 flex flex-row items-center justify-center"
-              type="submit" disabled={loading ? true : false}
+              type="submit"
+              disabled={loading ? true : false}
             >
               {loading ? (
                 <div role="status">
@@ -239,9 +261,10 @@ export default function Home() {
           </form>
         )}
 
-        <button 
+        <button
           className="p-2 justify-center object-contain flex items-center gap-4 hover:bg-green-300 border-2 w-1/2 rounded mx-auto "
-          onClick={handleGoogleSignIn} disabled={googleLoading ? true : false}
+          onClick={HandleGoogleSignIn}
+          disabled={googleLoading ? true : false}
         >
           {googleLoading ? (
             <div role="status">

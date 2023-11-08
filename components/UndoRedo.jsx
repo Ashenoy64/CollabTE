@@ -2,7 +2,9 @@
 
 import React from "react"
 
-
+/*
+Setting up the undo and redo feature for the editor
+*/
 export default function UndoRedo({editor})
 {
     return(

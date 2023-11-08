@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { BubbleMenu, EditorContent, useEditor } from '@tiptap/react'
 import React, { useEffect } from 'react'
@@ -28,21 +28,20 @@ export default () => {
   
 
   if (!editor) {
-    return null
+    return null;
   }
 
   
   return (
-    <div className=' flex flex-col justify-center'>
-                <PopMenu editor={editor}/>
-        <div className='w-full p-2 flex flex-col justify-center'>
-            <MenuBar editor={editor}></MenuBar>
-        </div>
-        <Tiptap editor={editor} />
-        <div>
-          <Footer editor={editor} />
-
-        </div>
+    <div className=" flex flex-col justify-center">
+      <PopMenu editor={editor} />
+      <div className="w-full p-2 flex flex-col justify-center">
+        <MenuBar editor={editor}></MenuBar>
+      </div>
+      <Tiptap editor={editor} />
+      <div>
+        <Footer editor={editor} />
+      </div>
     </div>
-  )
-}
+  );
+};
