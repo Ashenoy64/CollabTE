@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@hocuspocus/provider": "^2.7.1",
+    "@hocuspocus/server": "^2.7.1",
     "@tiptap/extension-bold": "^2.1.12",
     "@tiptap/extension-bullet-list": "^2.1.12",
     "@tiptap/extension-character-count": "^2.1.12",
