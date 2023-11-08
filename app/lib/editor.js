@@ -15,12 +15,11 @@ import CharacterCount from '@tiptap/extension-character-count'
 import Collaboration from '@tiptap/extension-collaboration'
 import History from '@tiptap/extension-history'
 import BulletList from '@tiptap/extension-bullet-list'
-
-import * as Y from "yjs"
-import {WebrtcProvider} from "y-webrtc"
+import { WebrtcProvider } from "y-webrtc"
 import { HocuspocusProvider } from '@hocuspocus/provider'
 import CollaborationCursor from '@tiptap/extension-collaboration-cursor'
 
+import * as Y from "yjs"
 
 
 /*
@@ -58,7 +57,7 @@ const Editor={
         CollaborationCursor.configure({
             provider,
             user:{
-                name:"Monish",
+                name:"Avanish",
                 color:"#f783ac",
             }
         })
@@ -72,4 +71,80 @@ const Editor={
       },
 }
 
-export default Editor
+export const EditorConfig = (isOnline, roomName,userName) => {
+    
+    if(isOnline){
+        const provider = new HocuspocusProvider({
+            url: "ws://127.0.0.1:1234",
+            name: roomName
+        })
+        const EditorConf = {
+            extensions: [
+                Document,
+                Paragraph,
+                Text,
+                Bold,
+                Heading.configure({ levels: [1, 2, 3], }),
+                Italic,
+                Underline,
+                TextAlign.configure({ types: ['heading', 'paragraph',], }),
+                TextStyle,
+                FontFamily,
+                ListItem,
+                OrderedList,
+                BulletList,
+                CharacterCount,
+                History,
+                Collaboration.configure({
+                    document: provider.document
+                }),
+                CollaborationCursor.configure({
+                    provider,
+                    user:{
+                        name:userName,
+                        color:"#f783ac",
+                    }
+                })
+            ],
+            editorProps: {
+                attributes: { class: "h-screen w-full sm:w-3/2  md:w-1/2 m-5 p-8 bg-slate-100 rounded  text-black no-scrollbar overflow-auto w-3/4 mx-auto" }
+            },
+            onUpdate: ({ editor }) => {
+                const json = editor.getJSON()
+
+            },
+        }
+        return EditorConf
+    }
+    else{
+        const EditorConf = {
+            extensions: [
+                Document,
+                Paragraph,
+                Text,
+                Bold,
+                Heading.configure({ levels: [1, 2, 3], }),
+                Italic,
+                Underline,
+                TextAlign.configure({ types: ['heading', 'paragraph',], }),
+                TextStyle,
+                FontFamily,
+                ListItem,
+                OrderedList,
+                BulletList,
+                CharacterCount,
+                History,
+            ],
+            editorProps: {
+                attributes: { class: "h-screen w-full sm:w-3/2  md:w-1/2 m-5 p-8 bg-slate-100 rounded  text-black no-scrollbar overflow-auto w-3/4 mx-auto" }
+            },
+            onUpdate: ({ editor }) => {
+                const json = editor.getJSON()
+
+            },
+        }
+
+        return EditorConf
+    }
+}
+

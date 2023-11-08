@@ -1,9 +1,11 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { useRouter, redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { LogOut, GetCurrentUser, auth } from "@/app/lib/firebase";
 import { onAuthStateChanged } from "firebase/auth";
+import { Room } from "./Modal";
+
 
 function FIleItems({ name, size }) {
   const [options, setOptions] = useState(false);
@@ -35,6 +37,7 @@ function FIleItems({ name, size }) {
 
 export default function UserDashBoard() {
   const [user, setUser] = useState(null);
+  const [roomState,setRoomState] = useState(0)
   const router = useRouter();
 
   useEffect(() => {
@@ -57,6 +60,24 @@ export default function UserDashBoard() {
       });
   };
 
+
+  const HandleRoomState = (state)=>{
+      setRoomState(state)
+  }
+
+  const RoomHandler=(roomName)=>{
+    const encodedRoomName = btoa(roomName)
+    const isOnline = true
+    if(roomState==2)
+    {
+      router.push(`/editor?isOnline=${isOnline}&roomName=${encodedRoomName}`)
+    }
+    else if(roomState==1)
+    {
+      router.push(`/editor?isOnline=${isOnline}&roomName=${encodedRoomName}`)
+    }
+  }
+
   const files = [
     { name: "Test.txt", size: "20MB" },
     { name: "Test1.txt", size: "21MB" },
@@ -72,17 +93,19 @@ export default function UserDashBoard() {
   ];
 
   if (user) {
+    const name = user.displayName ? user.displayName : user.email
     return (
       <div className="flex flex-col w-full h-full ">
+        {roomState ? <Room state={roomState} CloseHandler={HandleRoomState} RoomHandler={RoomHandler} />: ""}
         <div className="flex flex-row justify-between  top-0 border-b-2 text-white w-full p-2">
           <div className="font-bold text-xl pb-2">CollabTE</div>
           <div className="flex flex-row gap-2 text-black">
-            <button className=" hover:shadow-[0_0_5px_1px_rgba(255,_255,_255,_0.5)] rounded p-2 bg-blue-500">
+            <button className=" hover:shadow-[0_0_5px_1px_rgba(255,_255,_255,_0.5)] rounded p-2 bg-blue-500" onClick={()=>HandleRoomState(1)}>
               Join Room
             </button>
             <button
               className=" hover:shadow-[0_0_5px_1px_rgba(255,_255,_255,_0.5)] rounded p-2 bg-blue-300"
-              onClick={() => console.log(GetCurrentUser())}
+              onClick={()=>HandleRoomState(2)}
             >
               Create Room
             </button>
@@ -95,7 +118,7 @@ export default function UserDashBoard() {
           </div>
         </div>
         <div className="flex flex-row w-full items-center h-full p-4">
-          <div className="text-2xl font-bold ">Welcome Avanish</div>
+          <div className="text-2xl font-bold ">Welcome {name}</div>
         </div>
         <div className="flex flex-col w-full justify-center text-white items-center h-full">
           <div className="w-full text-lg font-semibold p-4">
@@ -116,7 +139,7 @@ export default function UserDashBoard() {
       <div role="status">
         <svg
           aria-hidden="true"
-          class="w-8 h-8 mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"
+          className="w-8 h-8 mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"
           viewBox="0 0 100 101"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
@@ -130,7 +153,7 @@ export default function UserDashBoard() {
             fill="currentFill"
           />
         </svg>
-        <span class="sr-only">Loading...</span>
+        <span className="sr-only">Loading...</span>
       </div>
     </div>
   );

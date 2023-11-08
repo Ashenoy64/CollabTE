@@ -3,7 +3,7 @@
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth"
 import { getFirestore, setDoc, doc, getDoc } from "firebase/firestore"
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup, signOut } from 'firebase/auth'
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup, signOut,onAuthStateChanged } from 'firebase/auth'
 import { get, getDatabase,ref,set } from "firebase/database";
 
 
@@ -25,8 +25,10 @@ Initializing the services of firebase
 */
 const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app)
+export const db = getFirestore(app)
 
 export const database=getDatabase(app)
+
 export const setData=(docName,docData)=>{
   const user=GetCurrentUser()
   set(ref(database,"users/"+docName),{
@@ -79,8 +81,8 @@ export const SignInWithEmail = (email, password) => {
 /*
   Function to get the current user under session
 */
-export const GetCurrentUser = () => {
-  return auth.currentUser;
+export const GetCurrentUser = (callBack) => {
+  return onAuthStateChanged(auth,callBack(user));
 }
 
 
