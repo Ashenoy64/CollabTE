@@ -25,8 +25,10 @@ Initializing the services of firebase
 */
 const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app)
+export const db = getFirestore(app)
 
 export const database=getDatabase(app)
+
 export const setData=(docName,docData)=>{
   const user=GetCurrentUser()
   set(ref(database,"users/"+docName),{
