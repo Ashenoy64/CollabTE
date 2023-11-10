@@ -25,55 +25,12 @@ import * as Y from "yjs"
 /*
 Setting up the collaborative environment
 */
-const provider=new HocuspocusProvider({
-    url:"ws://127.0.0.1:1234",
-    name: "example-document",
-    
-})
 
-/*
-Initilaizing the editor component
-*/
-const Editor={
-    extensions:[
-        Document,
-        Paragraph,
-        Text,
-        Bold,
-        Heading.configure({levels: [1, 2, 3],}),
-        Italic,
-        Underline,
-        TextAlign.configure({types: ['heading', 'paragraph',],}),
-        TextStyle,
-        FontFamily,
-        ListItem,
-        OrderedList,
-        BulletList,
-        CharacterCount,
-        History,
-        Collaboration.configure({
-            document: provider.document
-        }),
-        CollaborationCursor.configure({
-            provider,
-            user:{
-                name:"Avanish",
-                color:"#f783ac",
-            }
-        })
-    ],
-    editorProps:{
-        attributes:{class:"h-screen w-full sm:w-3/2  md:w-1/2 m-5 p-8 bg-slate-100 rounded  text-black no-scrollbar overflow-auto w-3/4 mx-auto"}
-    },
-    onUpdate: ({ editor }) => {
-        const json = editor.getJSON()
-        
-      },
-}
 
-export const EditorConfig = (isOnline, roomName,userName) => {
-    
-    if(isOnline){
+
+export const EditorConfig = (isOnline, roomName, userName) => {
+
+    if (isOnline) {
         const provider = new HocuspocusProvider({
             url: "ws://127.0.0.1:1234",
             name: roomName
@@ -100,9 +57,9 @@ export const EditorConfig = (isOnline, roomName,userName) => {
                 }),
                 CollaborationCursor.configure({
                     provider,
-                    user:{
-                        name:userName,
-                        color:"#f783ac",
+                    user: {
+                        name: userName,
+                        color: "#f783ac",
                     }
                 })
             ],
@@ -116,7 +73,7 @@ export const EditorConfig = (isOnline, roomName,userName) => {
         }
         return EditorConf
     }
-    else{
+    else {
         const EditorConf = {
             extensions: [
                 Document,
@@ -143,7 +100,6 @@ export const EditorConfig = (isOnline, roomName,userName) => {
 
             },
         }
-
         return EditorConf
     }
 }

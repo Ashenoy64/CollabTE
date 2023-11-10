@@ -63,23 +63,6 @@ export default function Home() {
   /*
   Handler for Google sigin
 */
-  // const HandleGoogleSignIn = async () => {
-  //   setGoogleLoading(true);
-  //   GoogleSignIn()
-  //     .then((user) => {
-  //       return CreateNewUserEntry(user);
-  //     })
-  //     .then(() => {
-  //       setGoogleLoading(false);
-  //       router.push("/dashboard");
-  //     })
-  //     .catch((error) => {
-  //       Notify("There was some problem while signing you in");
-  //       console.log(error)
-  //       setGoogleLoading(false);
-  //     });
-  // };
-
   const HandleGoogleSignIn = async () => {
     try {
       setGoogleLoading(true);
@@ -99,23 +82,6 @@ export default function Home() {
   /*
   Handler for regsitering the new user
 */
-  // const HandleNewUserRegistration = async () => {
-  //   setLoading(true);
-  //   if (CheckPassword()) {
-  //     CreateNewUser(email, password)
-  //       .then((user) => {
-  //         return CreateNewUserEntry(user);
-  //       })
-  //       .then((user) => {
-  //         router.push("/dashboard");
-  //       })
-  //       .catch((error) => {
-  //         console.log(error)
-  //         Notify("There was some problem while signing you in");
-  //       });
-  //   }
-  //   setLoading(false);
-  // };
   const HandleNewUserRegistration = async () => {
     setLoading(true);
 
@@ -138,22 +104,6 @@ export default function Home() {
   /*
   Handler for loging in the user
 */
-  // const HandleSigInWithEmail = async () => {
-  //   if (email == "" || password == "") return;
-  //   setLoading(true);
-  //   SignInWithEmail(email, password)
-  //     .then((user) => {
-  //       return CreateNewUserEntry(user);
-  //     })
-  //     .then((user) => {
-  //       router.push("/dashboard");
-  //     })
-  //     .catch((error) => {
-  //       console.log(error)
-  //       Notify("There was some problem while signing you in");
-  //     });
-  //   setLoading(false);
-  // };
   const HandleSigInWithEmail = async () => {
     if (email === "" || password === "") {
       return;

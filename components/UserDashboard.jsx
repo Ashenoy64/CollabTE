@@ -2,20 +2,37 @@
 
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { LogOut, GetUserFiles, auth, DeleteFile,DeleteFileData } from "@/app/lib/firebase";
+import {
+  LogOut,
+  GetUserFiles,
+  auth,
+  DeleteFile,
+  DeleteFileData,
+  SaveFile,
+  CreateSession,
+  CheckSession,
+} from "@/app/lib/firebase";
 import { onAuthStateChanged } from "firebase/auth";
-import { Room } from "./Modal";
+import { Room, CreateFile } from "./Modal";
 
-function FIleItems({ name,HandleDeleteFile}) {
-  
-
+function FIleItems({ name, HandleDeleteFile, HandleEditFile }) {
   return (
     <div className="flex flex-row justify-between  rounded border-2  p-2 w-full mx-auto">
       <div>{name}</div>
 
       <div className="flex flex-row gap-3">
-        <button className="p-2 rounded w-16 bg-red-400  " onClick={()=>HandleDeleteFile(name)}>Delete</button>
-        <button className="p-2 rounded w-16 bg-green-400  ">Edit</button>
+        <button
+          className="p-2 rounded w-16 bg-red-400  "
+          onClick={() => HandleDeleteFile(name)}
+        >
+          Delete
+        </button>
+        <button
+          className="p-2 rounded w-16 bg-green-400 "
+          onClick={() => HandleEditFile(name)}
+        >
+          Edit
+        </button>
       </div>
     </div>
   );
@@ -24,13 +41,16 @@ function FIleItems({ name,HandleDeleteFile}) {
 export default function UserDashBoard() {
   const [user, setUser] = useState(null);
   const [roomState, setRoomState] = useState(0);
+  const [fileWindow, setFileWindow] = useState(false);
   const router = useRouter();
   const [files, setFiles] = useState([]);
+  const [notice, setNotice] = useState("");
+  const [noticeActive, setNoticeActive] = useState(false);
 
   useEffect(() => {
     const GetFiles = async (user) => {
       if (user) {
-        const data = await GetUserFiles(user);
+        const data = await GetUserFiles(user.uid);
         if (data.exists()) {
           const _files = await data.data();
           setFiles(_files["files"]);
@@ -48,51 +68,103 @@ export default function UserDashBoard() {
     });
   }, [user]);
 
+  const Notify = (notice) => {
+    setNotice(notice);
+    setNoticeActive(true);
+
+    setTimeout(() => {
+      setNoticeActive(false);
+    }, 3000);
+  };
+
   const handleSignOut = async () => {
     LogOut()
       .then(() => {
         router.push("/");
       })
       .catch((error) => {
-        console.log(error);
+        Notify("There was a problem while logging you out");
       });
   };
 
+  const ToggleFileWindow = () => {
+    setFileWindow(!fileWindow);
+  };
   const HandleRoomState = (state) => {
     setRoomState(state);
   };
 
-  const RoomHandler = (roomName) => {
-    const encodedRoomName = btoa(roomName);
+  const RoomHandler = async (roomName) => {
+    const encodedRoomName = btoa(roomName + "-" + user.uid);
     const isOnline = true;
     if (roomState == 2) {
-      router.push(`/editor?isOnline=${isOnline}&roomName=${encodedRoomName}`);
+      try {
+        await CreateSession(user, roomName);
+        router.push(`/editor?isOnline=${isOnline}&roomName=${encodedRoomName}`);
+      } catch (error) {
+        Notify("Unable to Create a Room");
+      }
     } else if (roomState == 1) {
+      try {
+        const doc = await CheckSession(roomName);
+        if (doc.exists())
+          router.push(
+            `/editor?isOnline=${isOnline}&roomName=${btoa(roomName)}`
+          );
+        else {
+          Notify("No Matching Room Exists");
+        }
+      } catch (error) {
+        Notify("Unable to find any rooms");
+      }
+    }
+  };
+
+  const HandleFileDelete = async (filename) => {
+    if (user) {
+      try {
+        await DeleteFile(user.uid, filename);
+        await DeleteFileData(user.uid, filename);
+        setFiles((oldVals) => {
+          return oldVals.filter((file) => file != filename);
+        });
+        Notify("File Deleted");
+      } catch (error) {
+        Notify("There was a problem while deleting a file");
+      }
+    }
+  };
+
+  const HandleFileCreate = async (filename) => {
+    try {
+      await SaveFile(user.uid, filename);
+      setFiles([...files, filename]);
+      Notify("File Created");
+    } catch (error) {
+      Notify("There was a problem while creating a file");
+    }
+  };
+
+  const HandleFileEdit = (filename) => {
+    if (user) {
+      const encodedRoomName = btoa(filename);
+      const isOnline = false;
       router.push(`/editor?isOnline=${isOnline}&roomName=${encodedRoomName}`);
     }
   };
-  
-  const HandleFileDelete= async(filename)=>{
-    if(user)
-    {
-      try{
-        await DeleteFile(user.uid,filename)
-        await DeleteFileData(user.uid,filename);
-        setFiles(oldVals=>{
-          return oldVals.filter(file=>file!=filename)
-        })
-      }
-      catch(error)
-      {
-        console.log(error)
-      }
-    }
-  }
 
   if (user) {
     const name = user.displayName ? user.displayName : user.email;
     return (
       <div className="flex flex-col w-full h-full ">
+        {fileWindow ? (
+          <CreateFile
+            CloseHandler={ToggleFileWindow}
+            FileHandler={HandleFileCreate}
+          />
+        ) : (
+          ""
+        )}
         {roomState ? (
           <Room
             state={roomState}
@@ -102,6 +174,14 @@ export default function UserDashBoard() {
         ) : (
           ""
         )}
+        <div
+          className={`absolute top-0 p-2 bg-neutral-900 border-2 text-white  left-0 rounded z-10  ${
+            noticeActive ? "block" : "hidden"
+          } `}
+        >
+          {notice}
+        </div>
+
         <div className="flex flex-row justify-between  top-0 border-b-2 text-white w-full p-2">
           <div className="font-bold text-xl pb-2">CollabTE</div>
           <div className="flex flex-row gap-2 text-black">
@@ -129,12 +209,25 @@ export default function UserDashBoard() {
           <div className="text-2xl font-bold ">Welcome {name}</div>
         </div>
         <div className="flex flex-col w-full justify-center text-white items-center h-full">
-          <div className="w-full text-lg font-semibold p-4">
-            Here Are Your files
+          <div className="w-full flex flex-row text-lg font-semibold p-4 items-center justify-evenly">
+            <div className="p-2">Here Are Your Files</div>
+            <button
+              onClick={() => {
+                ToggleFileWindow();
+              }}
+              className=" flex flex-row justify-center items-center  border-2 border-white text-white font-bold rounded-full w-10 h-10"
+            >
+              <span>+</span>
+            </button>
           </div>
-          <div className="flex flex-col overflow-auto no-scrollbar w-96 h-1/2 gap-2 shadow-[0_0_100px_1px_rgba(255,_255,_255,_0.3)]">
+          <div className="flex flex-col overflow-auto no-scrollbar md:w-1/2 w-full h-1/2 gap-2 rounded-md shadow-[0_0_100px_1px_rgba(255,_255,_255,_0.3)]">
             {files.map((val, ind) => (
-              <FIleItems key={ind} name={val} HandleDeleteFile={HandleFileDelete} />
+              <FIleItems
+                key={ind}
+                name={val}
+                HandleDeleteFile={HandleFileDelete}
+                HandleEditFile={HandleFileEdit}
+              />
             ))}
           </div>
         </div>

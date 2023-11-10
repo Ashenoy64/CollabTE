@@ -109,8 +109,8 @@ export const SaveFileData = (object, username, filename) => {
   return setDoc(doc(db, "files", username + '-' + filename), object)
 }
 
-export const GetUserFiles = (user) => {
-  return getDoc(doc(db, "users", user.uid))
+export const GetUserFiles = (uid) => {
+  return getDoc(doc(db, "users", uid))
 }
 
 
@@ -138,5 +138,26 @@ export const CreateNewUserEntry = async (user) => {
   }
 };
 
+
+export const CreateSession=async (user,roomName)=>{
+
+    return setDoc(doc(db,'session',roomName+'-'+user.uid),
+    {
+      owner:user.uid,
+      roomName:roomName,
+      roomID:roomName+'-'+user.uid,
+    })
+}
+
+export const CheckSession = async(roomID)=>{
+  try{
+    const docSnapshot = await getDoc(doc(db, 'session', roomID));
+    return docSnapshot
+  }
+  catch(error)
+  {
+    throw error;
+  }
+}
 
 
