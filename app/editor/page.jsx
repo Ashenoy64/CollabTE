@@ -22,6 +22,7 @@ export default () => {
   const [notice, setNotice] = useState("");
   const [noticeActive, setNoticeActive] = useState(false);
 
+  // Function to notify user through popup
   const Notify = (notice) => {
     setNotice(notice);
     setNoticeActive(true);
@@ -31,6 +32,7 @@ export default () => {
     }, 3000);
   };
 
+  //Runs in parallel in the first render to get the authenticated user
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       if (user) {
@@ -41,15 +43,19 @@ export default () => {
     });
   }, []);
 
+  //Get all seach params
   const searchParms = useSearchParams();
   const roomName = searchParms.get("roomName");
   const isOnline = searchParms.get("isOnline");
+  const userName = searchParms.get("user");
   const decodeRoomName = roomName ? atob(roomName) : "untitled";
+  const name = userName ? atob(userName) : "USER";
   const editor =
     isOnline == "true"
-      ? useEditor(EditorConfig(isOnline, decodeRoomName, "Avanish"))
+      ? useEditor(EditorConfig(isOnline, decodeRoomName, name))
       : useEditor(EditorConfig(false, "", ""));
 
+  //If the session is realtime gets information related to the session in parallel
   useEffect(() => {
     const LoadSession = async (roomID) => {
       if (!session) {
@@ -72,14 +78,15 @@ export default () => {
       }
     };
     if (isOnline == "true" && user) LoadSession(decodeRoomName);
-
   }, [isOnline, user]);
 
+  //Editor content handler to set data, mainly used to set the data by nested components
   const DataSetter = (data) => {
     setData(data);
     editor.commands.setContent(data);
   };
 
+  //If the session is offline, this gets the file data
   useEffect(() => {
     const LoadFile = async (filename, editor) => {
       if (!data)

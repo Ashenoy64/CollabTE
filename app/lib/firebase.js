@@ -86,29 +86,33 @@ export const GetCurrentUser = (callBack) => {
 
 
 /*
-  Function to save the file
+  Function to save the filename under a user
 */
-
 export const SaveFile = (uid, filename) => {
   return updateDoc(doc(db, 'users', uid), {
     files: arrayUnion(filename)
   })
 }
-
+//Function to delete a file under a user
 export const DeleteFile = (uid, filename) => {
   return updateDoc(doc(db, 'users', uid), {
     files: arrayRemove(filename)
   })
 }
 
+
+//Function to delete file data
 export const DeleteFileData = (uid, filename) => {
   return deleteDoc(doc(db, "files", uid + '-' + filename))
 }
 
+
+//Function to save the file data
 export const SaveFileData = (object, username, filename) => {
   return setDoc(doc(db, "files", username + '-' + filename), object)
 }
 
+//function to get all files under a user
 export const GetUserFiles = (uid) => {
   return getDoc(doc(db, "users", uid))
 }
@@ -121,6 +125,7 @@ export const LoadFileData = (username, filename) => {
   return getDoc(doc(db, 'files', username + '-' + filename))
 }
 
+//Function to register a user separately to maintain the  filesystem
 export const CreateNewUserEntry = async (user) => {
 
   try {
@@ -138,7 +143,7 @@ export const CreateNewUserEntry = async (user) => {
   }
 };
 
-
+//Function to create a real time session
 export const CreateSession=async (user,roomName)=>{
 
     return setDoc(doc(db,'session',roomName+'-'+user.uid),
@@ -149,6 +154,7 @@ export const CreateSession=async (user,roomName)=>{
     })
 }
 
+//Function to check if a session exists or not, if it exists returns the context
 export const CheckSession = async(roomID)=>{
   try{
     const docSnapshot = await getDoc(doc(db, 'session', roomID));
