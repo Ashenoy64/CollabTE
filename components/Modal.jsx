@@ -113,8 +113,8 @@ export const LoadFileViewer = ({ uid, CloseHandler, LoadHandler }) => {
   const [file, setFiles] = useState([]);
 
   useEffect(() => {
-    const GetFiles = async (user) => {
-      if (user) {
+    const GetFiles = async (uid) => {
+      if (uid) {
         const data = await GetUserFiles(uid);
         if (data.exists()) {
           const _files = await data.data();

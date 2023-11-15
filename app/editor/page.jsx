@@ -12,7 +12,7 @@ import { onAuthStateChanged } from "firebase/auth";
 import { useRouter, useSearchParams } from "next/navigation";
 import TopBar from "@/components/TopBar";
 
-export default () => {
+export default Page=() => {
   const [user, setUser] = useState(null);
   const [data, setData] = useState(null);
   const [session, setSession] = useState(null);
