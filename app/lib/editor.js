@@ -18,6 +18,7 @@ import BulletList from '@tiptap/extension-bullet-list'
 import { WebrtcProvider } from "y-webrtc"
 import { HocuspocusProvider } from '@hocuspocus/provider'
 import CollaborationCursor from '@tiptap/extension-collaboration-cursor'
+import SpeechRecognition from 'extensions/src/SpeechRecognition'
 
 import * as Y from "yjs"
 
@@ -45,6 +46,7 @@ export const EditorConfig = (isOnline, roomName, userName) => {
                 Italic,
                 Underline,
                 TextAlign.configure({ types: ['heading', 'paragraph',], }),
+                SpeechRecognition.configure({lang: 'en-EN',}),
                 TextStyle,
                 FontFamily,
                 ListItem,
@@ -84,6 +86,7 @@ export const EditorConfig = (isOnline, roomName, userName) => {
                 Italic,
                 Underline,
                 TextAlign.configure({ types: ['heading', 'paragraph',], }),
+                SpeechRecognition.configure({lang: 'en-EN',}),
                 TextStyle,
                 FontFamily,
                 ListItem,

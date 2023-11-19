@@ -8,6 +8,7 @@ import Fonts from "@/components/Fonts";
 import Numbers from "@/components/Numbers";
 import UndoRedo from "./UndoRedo";
 import Bullets from "./BulletList";
+import Speech from "./Speech"
 
 
 export default function MenuBar({ editor,user }) {
@@ -18,6 +19,7 @@ export default function MenuBar({ editor,user }) {
           <BoldText editor={editor} />
           <ItalicText editor={editor} />
           <Underline editor={editor} />
+          <Speech editor={editor}/>
         </div>
         <Fonts editor={editor} />
       </div>
