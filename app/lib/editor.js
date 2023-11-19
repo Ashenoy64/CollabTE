@@ -24,11 +24,8 @@ import * as Y from "yjs"
 
 
 /*
-Setting up the collaborative environment
+Editor Config returns the configuration based on the required editor state
 */
-
-
-
 export const EditorConfig = (isOnline, roomName, userName) => {
 
     if (isOnline) {

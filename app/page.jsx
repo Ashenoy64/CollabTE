@@ -35,7 +35,7 @@ export default function Home() {
   };
 
   /*
-  Function to notify the user on any message
+  Function to notify the user on any message through popup
 */
   const Notify = (notice) => {
     setNotice(notice);

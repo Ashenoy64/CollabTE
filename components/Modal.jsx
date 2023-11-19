@@ -1,6 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 
+//Base modal
 export function Modal({ children }) {
   return (
     <div className="fixed inset-0 flex items-center justify-center z-50">
@@ -12,6 +13,7 @@ export function Modal({ children }) {
   );
 }
 
+//Room modal to allow user to create room or join a room
 export const Room = ({ state, CloseHandler, RoomHandler }) => {
   const [roomName, setRoomName] = useState("");
   return (
@@ -71,6 +73,7 @@ export const Room = ({ state, CloseHandler, RoomHandler }) => {
   );
 };
 
+//Modal to allow user to enter file name and create the file
 export const CreateFile = ({ CloseHandler, FileHandler }) => {
   const [filename, setFilename] = useState("");
   return (
@@ -109,12 +112,13 @@ export const CreateFile = ({ CloseHandler, FileHandler }) => {
 
 import { GetUserFiles } from "@/app/lib/firebase";
 
+//Displays all user files to the user
 export const LoadFileViewer = ({ uid, CloseHandler, LoadHandler }) => {
   const [file, setFiles] = useState([]);
 
   useEffect(() => {
-    const GetFiles = async (user) => {
-      if (user) {
+    const GetFiles = async (uid) => {
+      if (uid) {
         const data = await GetUserFiles(uid);
         if (data.exists()) {
           const _files = await data.data();
