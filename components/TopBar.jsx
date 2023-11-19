@@ -3,6 +3,8 @@ import { useState } from "react";
 import { LoadFileViewer } from "./Modal";
 import { SaveFileData, LoadFileData, SaveFile } from "../app/lib/firebase";
 
+
+//Component renders with the editor, allows user to save and load file while editing 
 export default function TopBar({
   root,
   filename,
@@ -57,9 +59,7 @@ export default function TopBar({
       )}
       <div className="flex  flex-row gap-3 justify-evenly ">
         <div className="p-2 border-2 rounded w-36 object-contain text-center">
-          <span className="text-white">
-            {filename}
-          </span>
+          <span className="text-white">{filename}</span>
         </div>
         <button
           className=" p-2 bg-white text-black rounded"

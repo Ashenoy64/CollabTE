@@ -101,7 +101,11 @@ export default function UserDashBoard() {
     if (roomState == 2) {
       try {
         await CreateSession(user, roomName);
-        router.push(`/editor?isOnline=${isOnline}&roomName=${encodedRoomName}&user=${btoa(name)}`);
+        router.push(
+          `/editor?isOnline=${isOnline}&roomName=${encodedRoomName}&user=${btoa(
+            name
+          )}`
+        );
       } catch (error) {
         Notify("Unable to Create a Room");
       }
@@ -110,7 +114,9 @@ export default function UserDashBoard() {
         const doc = await CheckSession(roomName);
         if (doc.exists())
           router.push(
-            `/editor?isOnline=${isOnline}&roomName=${btoa(roomName)}&user=${btoa(name)}`
+            `/editor?isOnline=${isOnline}&roomName=${btoa(
+              roomName
+            )}&user=${btoa(name)}`
           );
         else {
           Notify("No Matching Room Exists");

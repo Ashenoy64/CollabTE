@@ -7,7 +7,7 @@ import { createUserWithEmailAndPassword, signInWithEmailAndPassword, GoogleAuthP
 import { get, getDatabase, ref, set } from "firebase/database";
 
 
-
+//Firebase config 
 const firebaseConfig = {
   apiKey: "AIzaSyBFJfF-65jY3tVu0SLxx7IVqGFKK2vqyfI",
   databaseURL: "https://collabte-87933-default-rtdb.asia-southeast1.firebasedatabase.app",
@@ -26,11 +26,11 @@ Initializing the services of firebase
 const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app)
 export const db = getFirestore(app)
-
 export const database = getDatabase(app)
 
+
+//Saves the data during realtime editing 
 export const setData = (docName, docData) => {
-  const user = GetCurrentUser()
   set(ref(database, "users/" + docName), {
     data: docData,
 
@@ -43,9 +43,9 @@ export const setData = (docName, docData) => {
     })
 }
 
+//Loads the data when a new user joins the room
 export const getData = (docName) => {
   return get(ref(database, "users/" + docName))
-
 }
 
 /*

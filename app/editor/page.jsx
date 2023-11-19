@@ -12,7 +12,7 @@ import { onAuthStateChanged } from "firebase/auth";
 import { useRouter, useSearchParams } from "next/navigation";
 import TopBar from "@/components/TopBar";
 
-export default Page=() => {
+export default function Page(){
   const [user, setUser] = useState(null);
   const [data, setData] = useState(null);
   const [session, setSession] = useState(null);
@@ -50,10 +50,7 @@ export default Page=() => {
   const userName = searchParms.get("user");
   const decodeRoomName = roomName ? atob(roomName) : "untitled";
   const name = userName ? atob(userName) : "USER";
-  const editor =
-    isOnline == "true"
-      ? useEditor(EditorConfig(isOnline, decodeRoomName, name))
-      : useEditor(EditorConfig(false, "", ""));
+  const editor =useEditor(isOnline == "true" ? EditorConfig(isOnline, decodeRoomName, name):EditorConfig(false, "", ""));
 
   //If the session is realtime gets information related to the session in parallel
   useEffect(() => {
@@ -112,6 +109,7 @@ export default Page=() => {
     setRoomName(decodeRoomName);
   }, [isOnline, editor, user]);
 
+  //Conditionally render the component based on authenticity of the user
   if (user) {
     return (
       <div className=" flex flex-col justify-center">
@@ -138,7 +136,7 @@ export default Page=() => {
         </div>
         <Tiptap editor={editor} />
         <div>
-          <Footer editor={editor} />
+          <Footer editor={editor} username={name} status={isOnline == "true"} />
         </div>
       </div>
     );

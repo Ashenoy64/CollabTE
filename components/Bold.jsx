@@ -1,5 +1,4 @@
 
-
 /*
 Setting up the bold feature for the editor
 */

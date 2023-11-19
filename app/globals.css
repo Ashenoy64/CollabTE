@@ -2,6 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
+
+/* Styling to remove default scroll bar */
 @layer utilities {
   @variants responsive {
     /* Hide scrollbar for Chrome, Safari and Opera */
@@ -17,6 +19,8 @@
   }
 }
 
+
+/* Default styling of nextjs */
 :root {
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
@@ -40,6 +44,8 @@ body {
     )
     rgb(var(--background-start-rgb));
 }
+
+
 
 ol{
   list-style-type: decimal; /* For ul (unordered) lists */
