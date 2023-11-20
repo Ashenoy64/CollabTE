@@ -11,6 +11,7 @@ import { auth, CheckSession, LoadFileData } from "../lib/firebase";
 import { onAuthStateChanged } from "firebase/auth";
 import { useRouter, useSearchParams } from "next/navigation";
 import TopBar from "@/components/TopBar";
+import Autocomplete from "C:/Users/User/Desktop/New folder/CollaborativeEditor-1/components/Autocomplete";
 
 export default function Page(){
   const [user, setUser] = useState(null);
@@ -134,7 +135,9 @@ export default function Page(){
           />
           <MenuBar editor={editor} user={user}></MenuBar>
         </div>
-        <Tiptap editor={editor} />
+        <Tiptap editor={editor}/>
+        <Autocomplete suggestions={["Oranges", "Apples", "Banana", "Kiwi", "Mango"]}/>
+        
         <div>
           <Footer editor={editor} username={name} status={isOnline == "true"} />
         </div>
