@@ -1,6 +1,6 @@
 import { BubbleMenu } from "@tiptap/react";
 import { useState } from "react";
-import Autocomplete from "C:/Users/User/Desktop/CollaborativeEditor-1/components/Autocomplete.js";
+import Autocomplete from "@/components/Autocomplete";
 import getSelectedText from "@/app/lib/getSelectedText";
 
 //Popup menue to get the suggestion over the selected text
@@ -9,7 +9,7 @@ export default function PopMenu({ editor }) {
   return (
     <BubbleMenu editor={editor}>
       <div className="">
-        <button
+        <button className="text-green-800 font-bold"
           onClick={() => {
             setResult(getSelectedText(editor));
           }}
@@ -17,7 +17,7 @@ export default function PopMenu({ editor }) {
           Get Suggestions
         </button>
         <p
-          className="p-2 text-green"
+          className="p-2 text-black text-bold"
           onClick={() => {
             setResult("");
           }}

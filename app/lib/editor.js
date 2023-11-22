@@ -15,7 +15,6 @@ import CharacterCount from '@tiptap/extension-character-count'
 import Collaboration from '@tiptap/extension-collaboration'
 import History from '@tiptap/extension-history'
 import BulletList from '@tiptap/extension-bullet-list'
-import { WebrtcProvider } from "y-webrtc"
 import { HocuspocusProvider } from '@hocuspocus/provider'
 import CollaborationCursor from '@tiptap/extension-collaboration-cursor'
 import SpeechRecognition from 'extensions/src/SpeechRecognition'
