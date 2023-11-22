@@ -17,16 +17,14 @@ import History from '@tiptap/extension-history'
 import BulletList from '@tiptap/extension-bullet-list'
 import { HocuspocusProvider } from '@hocuspocus/provider'
 import CollaborationCursor from '@tiptap/extension-collaboration-cursor'
+import SpeechRecognition from 'extensions/src/SpeechRecognition'
 
 import * as Y from "yjs"
 
 
 /*
-Setting up the collaborative environment
+Editor Config returns the configuration based on the required editor state
 */
-
-
-
 export const EditorConfig = (isOnline, roomName, userName) => {
 
     if (isOnline) {
@@ -44,6 +42,7 @@ export const EditorConfig = (isOnline, roomName, userName) => {
                 Italic,
                 Underline,
                 TextAlign.configure({ types: ['heading', 'paragraph',], }),
+                SpeechRecognition.configure({lang: 'en-EN',}),
                 TextStyle,
                 FontFamily,
                 ListItem,
@@ -83,6 +82,7 @@ export const EditorConfig = (isOnline, roomName, userName) => {
                 Italic,
                 Underline,
                 TextAlign.configure({ types: ['heading', 'paragraph',], }),
+                SpeechRecognition.configure({lang: 'en-EN',}),
                 TextStyle,
                 FontFamily,
                 ListItem,
