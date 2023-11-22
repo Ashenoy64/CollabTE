@@ -1,6 +1,6 @@
 import { BubbleMenu } from "@tiptap/react";
 import { useState } from "react";
-import Autocomplete from "C:/Users/User/Desktop/New folder/CollaborativeEditor-1/components/Autocomplete.js";
+import Autocomplete from "C:/Users/User/Desktop/CollaborativeEditor-1/components/Autocomplete.js";
 import getSelectedText from "@/app/lib/getSelectedText";
 
 //Popup menue to get the suggestion over the selected text

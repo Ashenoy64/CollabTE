@@ -19,6 +19,8 @@ import { WebrtcProvider } from "y-webrtc"
 import { HocuspocusProvider } from '@hocuspocus/provider'
 import CollaborationCursor from '@tiptap/extension-collaboration-cursor'
 import SpeechRecognition from 'extensions/src/SpeechRecognition'
+import Autocomplete from '@/components/Autocomplete'
+
 
 import * as Y from "yjs"
 
@@ -48,6 +50,7 @@ export const EditorConfig = (isOnline, roomName, userName) => {
                 FontFamily,
                 ListItem,
                 OrderedList,
+                Autocomplete,
                 BulletList,
                 CharacterCount,
                 History,
@@ -86,6 +89,7 @@ export const EditorConfig = (isOnline, roomName, userName) => {
                 SpeechRecognition.configure({lang: 'en-EN',}),
                 TextStyle,
                 FontFamily,
+                Autocomplete,
                 ListItem,
                 OrderedList,
                 BulletList,
