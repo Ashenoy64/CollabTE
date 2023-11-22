@@ -47,7 +47,7 @@ export default () => {
   const decodeRoomName = roomName ? atob(roomName) : "untitled";
   const editor =
     isOnline == "true"
-      ? useEditor(EditorConfig(isOnline, decodeRoomName, "Avanish"))
+      ? useEditor(EditorConfig(isOnline, decodeRoomName, user))
       : useEditor(EditorConfig(false, "", ""));
 
   useEffect(() => {
