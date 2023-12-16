@@ -81,7 +81,7 @@ class Autocomplete extends Component {
             onKeyDown={onKeyDown}
             value={userInput}
           />
-          {suggestionsListComponent}
+
         </Fragment>
       );
     }

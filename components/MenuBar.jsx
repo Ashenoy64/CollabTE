@@ -16,7 +16,7 @@ export default function MenuBar({ editor, user }) {
   return (
     <div className="w-full md:w-3/4  bg-neutral-800 flex flex-row p-4 justify-evenly mx-auto rounded">
       <div className="flex flex-col gap-1 justify-center">
-        <div className="flex flex-row  justify-evenly">
+        <div className="flex flex-row  justify-evenly gap-2">
           <BoldText editor={editor} />
           <ItalicText editor={editor} />
           <Underline editor={editor} />
