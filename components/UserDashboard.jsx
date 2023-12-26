@@ -189,53 +189,58 @@ export default function UserDashBoard() {
           {notice}
         </div>
 
-        <div className="flex flex-row justify-between  top-0 border-b-2 text-white w-full p-2">
+        <div className="flex flex-row justify-between gap-2  top-0 border-b-2 text-white w-full p-2">
           <div className="font-bold text-xl pb-2">CollabTE</div>
-          <div className="flex flex-row gap-2 text-black">
+          <div className="flex flex-row gap-2 text-black font-semibold">
             <button
-              className=" hover:shadow-[0_0_5px_1px_rgba(255,_255,_255,_0.5)] rounded p-2 bg-blue-500"
+              className=" hover:shadow-[0_0_5px_1px_rgba(255,_255,_255,_0.5)] rounded p-1 text-xs md:p-2 bg-blue-500"
               onClick={() => HandleRoomState(1)}
             >
               Join Room
             </button>
             <button
-              className=" hover:shadow-[0_0_5px_1px_rgba(255,_255,_255,_0.5)] rounded p-2 bg-blue-300"
+              className=" hover:shadow-[0_0_5px_1px_rgba(255,_255,_255,_0.5)] rounded text-xs  p-1 md:p-2 bg-blue-300"
               onClick={() => HandleRoomState(2)}
             >
               Create Room
             </button>
             <button
-              className=" hover:shadow-[0_0_5px_1px_rgba(255,_255,_255,_0.5)] rounded p-2 bg-blue-200"
+              className=" hover:shadow-[0_0_5px_1px_rgba(255,_255,_255,_0.5)] rounded p-1 text-xs md:p-2 bg-blue-200"
               onClick={handleSignOut}
             >
               Sign Out
             </button>
           </div>
         </div>
-        <div className="flex flex-row w-full items-center h-full p-4">
+        <div className="flex flex-row w-full items-center  p-4">
           <div className="text-2xl font-bold ">Welcome {name}</div>
         </div>
-        <div className="flex flex-col w-full justify-center text-white items-center h-full">
-          <div className="w-full flex flex-row text-lg font-semibold p-4 items-center justify-evenly">
+        <div className="flex flex-col w-full justify-center text-white items-center h-full overflow-auto no-scrollbar">
+          <div className="w-full flex flex-row text-lg font-semibold p-4 items-center justify-between">
             <div className="p-2">Here Are Your Files</div>
+
             <button
               onClick={() => {
                 ToggleFileWindow();
               }}
-              className=" flex flex-row justify-center items-center  border-2 border-white text-white font-bold rounded-full w-10 h-10"
+              className=" flex flex-row justify-center items-center  border-2 border-white text-white font-normal md:font-bold rounded-full p-1 md:text-xl text-xs  md:p-2 shadow hover:shadow-[0_0_10px_2px_rgba(255,_255,_255,_0.5)]"
             >
-              <span>+</span>
+              Create File
             </button>
           </div>
-          <div className="flex flex-col overflow-auto no-scrollbar md:w-1/2 w-full h-1/2 gap-2 rounded-md shadow-[0_0_100px_1px_rgba(255,_255,_255,_0.3)]">
-            {files.map((val, ind) => (
-              <FIleItems
-                key={ind}
-                name={val}
-                HandleDeleteFile={HandleFileDelete}
-                HandleEditFile={HandleFileEdit}
-              />
-            ))}
+          <div className="flex flex-col overflow-auto md:w-3/4 w-full no-scrollbar  p-2  gap-2 rounded-md ">
+            {files.length>0 ? (
+              files.map((val, ind) => (
+                <FIleItems
+                  key={ind}
+                  name={val}
+                  HandleDeleteFile={HandleFileDelete}
+                  HandleEditFile={HandleFileEdit}
+                />
+              ))
+            ) : (
+              <div className="w-full h-full flex flex-row justify-center items-center text-red-400">No File</div>
+            )}
           </div>
         </div>
       </div>
