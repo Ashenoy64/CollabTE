@@ -62,7 +62,7 @@ export default function TopBar({
           <span className="text-white">{filename}</span>
         </div>
         <button
-          className=" p-2 bg-white text-black rounded"
+          className=" p-2 w-14 bg-white text-black rounded"
           onClick={() => HandleSave(filename)}
         >
           Save
@@ -81,22 +81,15 @@ export default function TopBar({
         )}
       </div>
       {isOnline == "true" ? (
-        <div className="flex flex-row items-center gap-3">
           <button
-            className="p-2 rounded w-16 bg-green-600"
+            className="p-2 object-contain rounded  font-semibold text-sm bg-green-600"
             onClick={() => {
-              navigator.clipboard.writeText(window.location.href);
+              navigator.clipboard.writeText(sessionID);
               NotifyHandler("Copied to Clipboard");
             }}
           >
-            Share
+            Share <span className="font-bold">RoomID</span>
           </button>
-
-          <div className="flex flex-row gap-1">
-            <span>RoomID</span>
-            <span>{sessionID}</span>
-          </div>
-        </div>
       ) : (
         ""
       )}

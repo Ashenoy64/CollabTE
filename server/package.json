@@ -13,6 +13,7 @@
   "dependencies": {
     "@hocuspocus/extension-database": "^2.7.1",
     "@hocuspocus/server": "^2.7.1",
+    "dotenv": "^16.3.1",
     "firebase": "^10.5.2",
     "y-protocols": "^1.0.6",
     "yjs": "^13.6.8"

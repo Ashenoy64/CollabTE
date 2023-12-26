@@ -7,27 +7,27 @@ import { setData,getData } from "./firebase.js";
 const server = new Hocuspocus({
     port:1234,
     async onLoadDocument({documentName}){
-        console.log("Fetching data !!")
+        // console.log("Fetching data !!")
         getData(documentName)
         .then(async (snapshot)=>{
             
             if (snapshot.exists()){
-                console.log("inserting dataa!!")
+                // console.log("inserting dataa!!")
                 const data = await snapshot.val().data
-                console.log(data)
+                // console.log(data)
                 return data
                 
             }
             
         })
         .catch((error)=>{
-            console.log('Error')
+            // console.log('Error')
         })
     },
     extensions:[
         new Database({
             store:async({documentName,state})=>{
-                console.log("Storing")
+                // console.log("Storing")
                 setData(documentName,state)
             }
         })

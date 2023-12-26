@@ -1,36 +1,80 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# CollabTE - Collaborative Text Editor
 
-## Getting Started
+CollabTE is a collaborative text editor built using TipTap, offering a seamless platform for multiple users to collaboratively edit text files. The editor utilizes Firebase for basic file system functionality, enabling offline editing capabilities along with a room-based collaborative environment. Users can join specific rooms using unique IDs and collaboratively work on shared documents in real-time.
 
-First, run the development server:
+## Features
+
+- **TipTap Text Editor**: Provides a basic text editing interface.
+- **Firebase Integration**: Offers a simple file system using Firebase.
+- **Offline Editing**: Allows users to edit files even when offline.
+- **Room-Based Collaboration**: Users can join specific rooms to collaborate on shared documents.
+- **Real-Time Collaboration**: Enables simultaneous editing by multiple users in a room.
+
+## Installation
+
+To set up CollabTE locally, follow these steps:
+
+### Cloning the Repository
+
+Clone the repository or extract the ZIP file:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/senju-hashirama/CollaborativeEditor
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Setting up Firebase
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+1. Set up a Firebase project with the following services enabled:
+    - Authentication (with Google provider and Email/Password)
+    - Cloud Firestore
+    - Realtime Database 
+   
+2. Obtain the Firebase configuration object.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+3. Place the Firebase configuration key into a `.env` file located in the `server` folder:
 
-## Learn More
+   ```dotenv
+   FIREBASE_CONFIG={
+     apiKey: "YOUR_API_KEY",
+     authDomain: "YOUR_AUTH_DOMAIN",
+     // Add other necessary keys
+   }
+   ```
 
-To learn more about Next.js, take a look at the following resources:
+4. Paste the same Firebase configuration object into `app/lib/firebase.js` in your project.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Installing Dependencies
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+Install the necessary dependencies by running the following commands:
 
-## Deploy on Vercel
+```bash
+cd CollabTE
+npm install
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+cd server
+npm install
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+### Starting the Server
+
+Start the server by running:
+
+```bash
+# Frontend
+npm run dev
+
+# Server
+cd server
+node server.js
+```
+
+This will launch the frontend and server environments, allowing you to start using CollabTE locally.
+
+## Usage
+
+Once the server is running, access the CollabTE application in your browser at `http://localhost:your-port` and start collaborating in real-time within the text editor.
+
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.

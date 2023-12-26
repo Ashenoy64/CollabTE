@@ -7,17 +7,17 @@ import { createUserWithEmailAndPassword, signInWithEmailAndPassword, GoogleAuthP
 import { get, getDatabase, ref, set } from "firebase/database";
 
 
-//Firebase config 
 const firebaseConfig = {
-  apiKey: "AIzaSyBFJfF-65jY3tVu0SLxx7IVqGFKK2vqyfI",
-  databaseURL: "https://collabte-87933-default-rtdb.asia-southeast1.firebasedatabase.app",
-  authDomain: "collabte-87933.firebaseapp.com",
-  projectId: "collabte-87933",
-  storageBucket: "collabte-87933.appspot.com",
-  messagingSenderId: "17972686438",
-  appId: "1:17972686438:web:dc6d47585db806b23687a7",
-  measurementId: "G-LQTY6FXM75"
+  apiKey: "",
+  databaseURL: "",
+  authDomain: "",
+  projectId: "",
+  storageBucket: "",
+  messagingSenderId:"",
+  appId: "",
+  measurementId: "",
 };
+
 
 
 /*

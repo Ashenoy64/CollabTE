@@ -4,18 +4,20 @@ import { initializeApp } from "firebase/app";
 import { getAuth} from "firebase/auth"
 import { createUserWithEmailAndPassword,signInWithEmailAndPassword,GoogleAuthProvider,signInWithPopup,signOut} from 'firebase/auth'
 import { get, getDatabase,ref,set } from "firebase/database";
+import dotenv from 'dotenv'
+
+dotenv.config()
 
 const firebaseConfig = {
-  apiKey: "AIzaSyBFJfF-65jY3tVu0SLxx7IVqGFKK2vqyfI",
-  databaseURL: "https://collabte-87933-default-rtdb.asia-southeast1.firebasedatabase.app",
-  authDomain: "collabte-87933.firebaseapp.com",
-  projectId: "collabte-87933",
-  storageBucket: "collabte-87933.appspot.com",
-  messagingSenderId: "17972686438",
-  appId: "1:17972686438:web:dc6d47585db806b23687a7",
-  measurementId: "G-LQTY6FXM75"
+  apiKey: process.env.APIKEY,
+  databaseURL: process.env.DBURL,
+  authDomain: process.env.AUTHDOMAIN,
+  projectId: process.env.PID,
+  storageBucket: process.env.STORAGE_BUCKET,
+  messagingSenderId:process.env.MESSAGE_ID,
+  appId: process.env.APPID,
+  measurementId: process.env.MID,
 };
-
 
 
 const app = initializeApp(firebaseConfig);
