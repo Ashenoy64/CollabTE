@@ -17,7 +17,7 @@ import { Room, CreateFile } from "./Modal";
 
 function FIleItems({ name, HandleDeleteFile, HandleEditFile }) {
   return (
-    <div className="flex flex-row justify-between  rounded border-2  p-2 w-full mx-auto">
+    <div className="flex flex-row items-center justify-between  rounded border-2  p-2 w-full mx-auto">
       <div>{name}</div>
 
       <div className="flex flex-row gap-3">
@@ -213,7 +213,7 @@ export default function UserDashBoard() {
           </div>
         </div>
         <div className="flex flex-row w-full items-center  p-4">
-          <div className="text-2xl font-bold ">Welcome {name}</div>
+          <div className="text-2xl font-bold ">Welcome <span className="text-blue-300">{name}</span></div>
         </div>
         <div className="flex flex-col w-full justify-center text-white items-center h-full overflow-auto no-scrollbar">
           <div className="w-full flex flex-row text-lg font-semibold p-4 items-center justify-between">
@@ -223,7 +223,7 @@ export default function UserDashBoard() {
               onClick={() => {
                 ToggleFileWindow();
               }}
-              className=" flex flex-row justify-center items-center  border-2 border-white text-white font-normal md:font-bold rounded-full p-1 md:text-xl text-xs  md:p-2 shadow hover:shadow-[0_0_10px_2px_rgba(255,_255,_255,_0.5)]"
+              className=" flex flex-row justify-center items-center  border-2 border-white text-white font-normal  rounded-full p-2 text-sm"
             >
               Create File
             </button>
